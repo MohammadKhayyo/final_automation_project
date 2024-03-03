@@ -2,11 +2,13 @@ import unittest
 from Utils import users
 from infra.browser_wrapper import BrowserWrapper
 from logic.login_page import LoginPage
+from logic.Epics_page import EpicsPage
 from logic.Home_page import HomePage
+from Utils import generate_string
 
 
-class ParallelHomePageTests(unittest.TestCase):
-    VALID_USERS = users.valid_users
+class ParallelEpicsTests(unittest.TestCase):
+    VALID_USERS = users.authentic_users
 
     def setUp(self):
         self.browser_wrapper = BrowserWrapper()
@@ -16,19 +18,18 @@ class ParallelHomePageTests(unittest.TestCase):
         self.login_page = LoginPage(self.driver)
         user = self.VALID_USERS[0]
         self.login_page.login(user['email'], user['password'])
+        self.epics_Page = EpicsPage(self.driver)
         self.home_page = HomePage(self.driver)
+        self.home_page.switch_to_environment(environment_name="dev")
 
-    # def test_switch_between_environments(self):
-    #     name = self.home_page.switch_to_environment(environment_name="sales CRM")
-    #     self.assertEqual(name, "sales CRM", "You are not in a sales CRM environment")
-    #     name = self.home_page.switch_to_environment(environment_name="dev")
-    #     self.assertEqual(name, "dev", "You are not in a dev environment")
-    #
-    # def test_sign_out(self):
-    #     status = self.home_page.sign_out()
-    #     self.assertTrue(status, "test_sign_out filed")
+    def test_add_epic_and_and_delete_it(self):
+        print("test_add_epic_and_and_delete_it")
+        task_name = generate_string.create_secure_string()
+        status = self.epics_Page.add_new_epic(task_name)  # Use a unique name to ensure the test is reliable
+        self.assertTrue(status, "add new task did not succeed")
+        status = self.epics_Page.delete_epic(task_name)
+        self.assertTrue(status, "Delete The epic did not succeed")
 
     def tearDown(self):
         if self.driver:
             self.driver.quit()
-        # self.browser_wrapper.close_browser(self.driver)

@@ -1,15 +1,13 @@
-import time
-from os.path import dirname, join
 from selenium import webdriver
-from infra.config_loader import ConfigLoader
+from infra.configurations import ConfigurationLoader
 
 
 class BrowserWrapper:
 
     def __init__(self):
         self.driver = None
-        configloader = ConfigLoader()
-        self.config = configloader.load_config()
+        configloader = ConfigurationLoader()
+        self.config = configloader.get_configuration()
 
     def get_driver(self, browser):
         if self.config["grid"]:
@@ -28,10 +26,6 @@ class BrowserWrapper:
         # self.driver.fullscreen_window()
         return self.driver
 
-    # def close_browser(self, driver):
-    #     if driver:
-    #         driver.close()
-
     def set_up_capabilities(self, browser_type):
         options = None
         if browser_type.lower() == 'chrome':
@@ -46,20 +40,3 @@ class BrowserWrapper:
             return options
         else:
             raise ValueError("Unsupported browser type")
-
-    # def is_parallel(self):
-    #     return self.config['parallel']
-    #
-    # def get_browsers(self):
-    #     return self.config["browser_types"]
-    #
-    # def get_filename(self, filename):
-    #     here = dirname(__file__)
-    #     output = join(here, filename)
-    #     return output
-    #
-    # def is_grid(self):
-    #     return self.config['grid']
-    #
-    # def get_browser(self):
-    #     return self.config['browser']

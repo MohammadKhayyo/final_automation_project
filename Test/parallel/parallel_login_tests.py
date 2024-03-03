@@ -4,9 +4,8 @@ from infra.browser_wrapper import BrowserWrapper
 from logic.login_page import LoginPage
 
 
-class ParallelLoginPageTests(unittest.TestCase):
-    VALID_USERS = users.valid_users
-    INVALID_USERS = users.invalid_users
+class ParallelLoginTests(unittest.TestCase):
+    VALID_USERS = users.authentic_users
 
     def setUp(self):
         self.browser_wrapper = BrowserWrapper()
@@ -14,6 +13,7 @@ class ParallelLoginPageTests(unittest.TestCase):
         self.browser = getattr(self.__class__, 'browser', default_browser)
         self.driver = self.browser_wrapper.get_driver(browser=self.browser)
         self.login_page = LoginPage(self.driver)
+
 
     def test_login_with_valid_user(self):
         print("test_login_with_valid_user")
@@ -24,4 +24,3 @@ class ParallelLoginPageTests(unittest.TestCase):
     def tearDown(self):
         if self.driver:
             self.driver.quit()
-        # self.browser_wrapper.close_browser(self.driver)
