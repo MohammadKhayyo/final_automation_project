@@ -1,6 +1,6 @@
 import unittest
 from Utils import users
-from infra.browser_wrapper import BrowserWrapper
+from infra.browser_wrapper import WebDriverManager
 from logic.login_page import LoginPage
 from logic.Tasks_page import TasksPage
 from logic.Home_page import HomePage
@@ -11,23 +11,27 @@ class ParallelTasksTests(unittest.TestCase):
     VALID_USERS = users.authentic_users
 
     def setUp(self):
-        self.browser_wrapper = BrowserWrapper()
-        default_browser = 'firefox'
+        self.browser_wrapper = WebDriverManager()
+        default_browser = 'chrome'
         browser = getattr(self.__class__, 'browser', default_browser)
-        self.driver = self.browser_wrapper.get_driver(browser=browser)
+        self.driver = self.browser_wrapper.initialize_web_driver(browser_name=browser)
         self.login_page = LoginPage(self.driver)
         user = self.VALID_USERS[0]
         self.login_page.login(user['email'], user['password'])
-        self.tasks_Page = TasksPage(self.driver)
+        self.tasks_Interface = TasksPage(self.driver)
         self.home_page = HomePage(self.driver)
-        self.home_page.switch_to_environment(environment_name="dev")
+        self.home_page.changeEnvironment(environment_name="dev")
 
-    def test_add_Task_and_and_delete_it(self):
-        task_name = generate_string.create_secure_string()
-        status = self.tasks_Page.add_new_task(task_name)
-        self.assertTrue(status, "test_add_Task_and_and_delete_it did not succeed")
-        status = self.tasks_Page.delete_tasks(task_name)
-        self.assertTrue(status, "test_add_Task_and_and_delete_it did not succeed")
+    def test_create_and_remove_task(self):
+        unique_task_name = generate_string.create_secure_string()
+        creation_success = self.tasks_Interface.create_task(unique_task_name)
+        self.assertTrue(creation_success, "Failed to create and then delete the task.")
+        deletion_success = self.tasks_Interface.remove_task(task_name=unique_task_name)
+        self.assertTrue(deletion_success, "Task deletion did not proceed as expected.")
+
+    def test_search_in_task(self):
+        status = self.tasks_Interface.test_search_in_task(name="New task")
+        self.assertTrue(status, "search did not succeed")
 
     def tearDown(self):
         if self.driver:

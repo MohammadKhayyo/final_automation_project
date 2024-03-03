@@ -1,6 +1,6 @@
 import unittest
 from Utils import users
-from infra.browser_wrapper import BrowserWrapper
+from infra.browser_wrapper import WebDriverManager
 from logic.login_page import LoginPage
 from logic.Retrospectives_page import RetrospectivesPage
 from logic.Home_page import HomePage
@@ -11,23 +11,25 @@ class ParallelRetrospectivesTests(unittest.TestCase):
     VALID_USERS = users.authentic_users
 
     def setUp(self):
-        self.browser_wrapper = BrowserWrapper()
+        self.browser_wrapper = WebDriverManager()
         default_browser = 'chrome'
         self.browser = getattr(self.__class__, 'browser', default_browser)
-        self.driver = self.browser_wrapper.get_driver(browser=self.browser)
+        self.driver = self.browser_wrapper.initialize_web_driver(browser_name=self.browser)
         self.login_page = LoginPage(self.driver)
         user = self.VALID_USERS[0]
         self.login_page.login(user['email'], user['password'])
         self.retrospectives_page = RetrospectivesPage(self.driver)
         self.home_page = HomePage(self.driver)
-        self.home_page.switch_to_environment(environment_name="dev")
+        self.home_page.changeEnvironment(environment_name="dev")
 
-    def test_add_retrospectives_and_and_delete_it(self):
+    def test_create_and_remove_retrospective(self):
         task_name = generate_string.create_secure_string()
-        status = self.retrospectives_page.add_new_retrospective(task_name)
-        self.assertTrue(status, "test_add_retrospectives_and_and_delete_it did not succeed")
-        status = self.retrospectives_page.delete_retrospectives(task_name)
-        self.assertTrue(status, "test_add_retrospectives_and_and_delete_it did not succeed")
+        creationStatus = self.retrospectives_page.add_new_retrospective(task_name)
+        self.assertTrue(creationStatus, "Creation of a new retrospective failed")
+        deletionStatus = self.retrospectives_page.bulkDeleteRetrospectives(task_name)
+        self.assertTrue(deletionStatus, "Deletion of the retrospective failed")
+
+
 
     def tearDown(self):
         if self.driver:

@@ -16,13 +16,13 @@ class LoginPage(BasePage):
     def login(self, email, password):
         """Login method to enter credentials and navigate to the board."""
         try:
-            self.navigation(self.URL_BOARD)
-            self.wait_for_element_and_click(self.LOGIN)
-            self.type_text(self.EMAIL, email)
-            self.type_text(self.PASSWORD, password)
-            self.wait_for_element_and_click(self.ENTER)
-            self.wait_for_url(self.URL_BOARD)
-            self.wait_for_click_able_element(self.switcher_button)
+            self.navigate_to(self.URL_BOARD)
+            self.click_when_clickable(self.LOGIN)
+            self.enter_text(self.EMAIL, email)
+            self.enter_text(self.PASSWORD, password)
+            self.click_when_clickable(self.ENTER)
+            self.wait_for_url_change(self.URL_BOARD)
+            self.clickable_element(self.switcher_button)
             return True
         except Exception as E:
             print(E)

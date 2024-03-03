@@ -1,29 +1,22 @@
 from selenium import webdriver
-from infra.configurations import ConfigurationLoader
+from infra.configurations import ConfigurationManager
 
 
-class BrowserWrapper:
+class WebDriverManager:
 
     def __init__(self):
         self.driver = None
-        configloader = ConfigurationLoader()
-        self.config = configloader.get_configuration()
+        config_manager = ConfigurationManager()
+        self.settings = config_manager.load_settings()
 
-    def get_driver(self, browser):
-        if self.config["grid"]:
-            options = self.set_up_capabilities(browser)
-            self.driver = webdriver.Remote(command_executor=self.config["hub"], options=options)
+    def initialize_web_driver(self, browser_name):
+        if self.settings["grid"]:
+            driver_options = self.set_up_capabilities(browser_name)
+            self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=driver_options)
         else:
-            if browser.lower() == 'chrome':
-                self.driver = webdriver.Chrome()
-            elif browser.lower() == 'firefox':
-                self.driver = webdriver.Firefox()
-            elif browser.lower() == 'edge':
-                self.driver = webdriver.Edge()
-        url = self.config["url"]
-        self.driver.get(url)
-        self.driver.maximize_window()
-        # self.driver.fullscreen_window()
+            self.driver = self.create_local_driver(browser_name)
+            self.navigate_to_url(self.settings["base_url"])
+            self.maximize_browser_window()
         return self.driver
 
     def set_up_capabilities(self, browser_type):
@@ -35,8 +28,25 @@ class BrowserWrapper:
         elif browser_type.lower() == 'edge':
             options = webdriver.EdgeOptions()
         if options is not None:
-            platform_name = self.config["platform"]
+            platform_name = self.settings["platform"]
             options.add_argument(f'--platformName={platform_name}')
             return options
         else:
             raise ValueError("Unsupported browser type")
+
+    def create_local_driver(self, browser_name):
+        browser_name_lower = browser_name.lower()
+        if browser_name_lower == 'chrome':
+            return webdriver.Chrome()
+        elif browser_name_lower == 'firefox':
+            return webdriver.Firefox()
+        elif browser_name_lower == 'edge':
+            return webdriver.Edge()
+        else:
+            raise ValueError("Browser type not supported")
+
+    def navigate_to_url(self, url):
+        self.driver.get(url)
+
+    def maximize_browser_window(self):
+        self.driver.maximize_window()

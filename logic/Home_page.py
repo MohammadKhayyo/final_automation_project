@@ -16,24 +16,24 @@ class HomePage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def switch_to_environment(self, environment_name='dev'):
+    def changeEnvironment(self, environment_name='dev'):
         try:
-            self.wait_for_element_and_click(self.switcher_button)
+            self.click_when_clickable(self.switcher_button)
             if environment_name == 'dev':
-                self.wait_for_element_and_click(self.DIV_BUTTON)
+                self.click_when_clickable(self.DIV_BUTTON)
             elif environment_name == "sales CRM":
-                self.wait_for_element_and_click(self.SALES_CRM)
+                self.click_when_clickable(self.SALES_CRM)
             count = 0
             environment_span = None
             while count <= 10:
-                environment_span = self.wait_presence_of_element_located(self.environment_name)
+                environment_span = self.wait_for_element(self.environment_name)
                 try:
                     WebDriverWait(self._driver, 3).until(lambda driver: environment_name == environment_span.text)
                     break
                 except:
-                    environment_span = self.wait_presence_of_element_located(self.environment_name)
+                    environment_span = self.wait_for_element(self.environment_name)
                     count += 1
-            environment_span = self.wait_presence_of_element_located(self.environment_name)
+            environment_span = self.wait_for_element(self.environment_name)
             name = environment_span.text
             return name
         except Exception as E:
@@ -43,9 +43,9 @@ class HomePage(BasePage):
     def sign_out(self):
         """Sign out method to log out from the application."""
         try:
-            self.wait_for_element_and_click(self.DROP_DOWN_LIST)
-            self.wait_for_element_and_click(self.SIGN_OUT)
-            self.wait_for_element_and_click(self.LOGIN)
+            self.click_when_clickable(self.DROP_DOWN_LIST)
+            self.click_when_clickable(self.SIGN_OUT)
+            self.click_when_clickable(self.LOGIN)
             return True
         except Exception as E:
             print(E)

@@ -20,12 +20,12 @@ class RetrospectivesPage(BasePage):
                             TEXT_NEW=self.TEXT_NEW_RETROSPECTIVES, NAME_NEW=self.NAME_NEW_RETROSPECTIVES,
                             name_new="New feedback")
 
-    def delete_retrospectives(self, sprint_name="New feedback", select_Type="first"):
+    def bulkDeleteRetrospectives(self, sprint_name="New feedback", select_Type="first"):
         return self.delete_equal(name=sprint_name, ELEMENT=self.RETROSPECTIVES_ELEMENT, select_Type=select_Type)
 
     def delete_all_retrospectives(self):
         return self.delete_all(self.RETROSPECTIVES_ELEMENT, NAME_NEW=self.NAME_NEW_RETROSPECTIVES)
 
-    def undo_delete_all_retrospectives(self):
+    def revertBulkDeletion(self):
         _elements = self.delete_all_retrospectives()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_RETROSPECTIVES)

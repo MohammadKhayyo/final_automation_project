@@ -20,12 +20,12 @@ class BugsQueuePage(BasePage):
                             TEXT_NEW=self.TEXT_NEW_BUGS_QUEUE, NAME_NEW=self.NAME_NEW_BUGS_QUEUE,
                             name_new="New bug")
 
-    def delete_bugs_queue(self, bugs_queue_name="New bug", select_Type="first"):
+    def bulkDeleteBugs(self, bugs_queue_name="New bug", select_Type="first"):
         return self.delete_equal(name=bugs_queue_name, ELEMENT=self.BUGS_QUEUE_ELEMENT, select_Type=select_Type)
 
     def delete_all_bugs_queue(self):
         return self.delete_all(self.BUGS_QUEUE_ELEMENT, NAME_NEW=self.NAME_NEW_BUGS_QUEUE)
 
-    def undo_delete_all_bugs_queue(self):
+    def revertBulkBugDeletion(self):
         _elements = self.delete_all_bugs_queue()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_BUGS_QUEUE)

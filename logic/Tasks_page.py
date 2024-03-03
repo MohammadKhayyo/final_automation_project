@@ -15,16 +15,19 @@ class TasksPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def add_new_task(self, task_name="New task"):
+    def create_task(self, task_name="New task"):
         return self.add_new(name=task_name, ELEMENT=self.TASK_ELEMENT, NEW_ELEMENT=self.NEW_TASK_ELEMENT,
                             TEXT_NEW=self.TEXT_NEW_TASK, NAME_NEW=self.NAME_NEW_TASK, name_new="New task", Task=True)
 
-    def delete_tasks(self, task_name="New task", select_Type="first"):
+    def remove_task(self, task_name="New task", select_Type="first"):
         return self.delete_equal(name=task_name, ELEMENT=self.TASK_ELEMENT, select_Type=select_Type, Task=True)
 
     def delete_all_tasks(self):
         return self.delete_all(self.TASK_ELEMENT, NAME_NEW=self.NAME_NEW_TASK, Task=True)
 
-    def undo_delete_all_tasks(self):
+    def revertAllTaskDeletions(self):
         _elements = self.delete_all_tasks()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_TASK)
+
+    def test_search_in_task(self, name="New sprint"):
+        return self.check_search(ELEMENT=self.TASK_ELEMENT, name=name)

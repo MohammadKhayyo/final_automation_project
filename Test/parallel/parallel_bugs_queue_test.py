@@ -1,6 +1,6 @@
 import unittest
 from Utils import users
-from infra.browser_wrapper import BrowserWrapper
+from infra.browser_wrapper import WebDriverManager
 from logic.login_page import LoginPage
 from logic.Bugs_Queue_page import BugsQueuePage
 from logic.Home_page import HomePage
@@ -11,23 +11,23 @@ class ParallelBugsQueueTests(unittest.TestCase):
     VALID_USERS = users.authentic_users
 
     def setUp(self):
-        self.browser_wrapper = BrowserWrapper()
+        self.browser_wrapper = WebDriverManager()
         default_browser = 'chrome'
         self.browser = getattr(self.__class__, 'browser', default_browser)
-        self.driver = self.browser_wrapper.get_driver(browser=self.browser)
+        self.driver = self.browser_wrapper.initialize_web_driver(browser_name=self.browser)
         self.login_page = LoginPage(self.driver)
         user = self.VALID_USERS[0]
         self.login_page.login(user['email'], user['password'])
         self.bugs_queue_page = BugsQueuePage(self.driver)
         self.home_page = HomePage(self.driver)
-        self.home_page.switch_to_environment(environment_name="dev")
+        self.home_page.changeEnvironment(environment_name="dev")
 
     def test_add_retrospectives_and_and_delete_it(self):
-        task_name = generate_string.create_secure_string()
-        status = self.bugs_queue_page.add_new_bugs_queue(task_name)
-        self.assertTrue(status, "test_add_retrospectives_and_and_delete_it did not succeed")
-        status = self.bugs_queue_page.delete_bugs_queue(task_name)
-        self.assertTrue(status, "test_add_retrospectives_and_and_delete_it did not succeed")
+        unique_bug_name = generate_string.create_secure_string()
+        creationSuccess = self.bugs_queue_page.add_new_bugs_queue(unique_bug_name)
+        self.assertTrue(creationSuccess, "Failed to add a new bug to the queue")
+        deletionSuccess = self.bugs_queue_page.delete_equal(unique_bug_name)
+        self.assertTrue(deletionSuccess, "Failed to remove the bug from the queue")
 
     def tearDown(self):
         if self.driver:

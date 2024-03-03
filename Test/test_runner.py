@@ -1,7 +1,7 @@
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
-from infra.configurations import ConfigurationLoader
+from infra.configurations import ConfigurationManager
 from Test.parallel.parallel_tasks_tests import ParallelTasksTests
 from Test.parallel.parallel_sprints_tests import ParallelSprintsTests
 from Test.parallel.parallel_epics_tests import ParallelEpicsTests
@@ -46,8 +46,8 @@ def run_tests_for_browser_parallel(browser_list, test_groups):
 
 
 if __name__ == "__main__":
-    config_manager = ConfigurationLoader()
-    settings = config_manager.get_configuration()
+    config_manager = ConfigurationManager()
+    settings = config_manager.load_settings()
     is_parallel = settings['parallel']
     is_serial = not settings['parallel']
     browsers = settings["browser_types"]
