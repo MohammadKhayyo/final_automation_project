@@ -1,0 +1,14 @@
+{
+  "hub": "http://192.168.56.1:4444",
+  "url": "https://mohammadkhayyo12account.monday.com",
+  "grid": true,
+  "parallel": true,
+  "serial": false,
+  "browser": "chrome",
+  "platform": "windows",
+  "browser_types": [
+    "chrome",
+    "firefox",
+    "edge"
+  ]
+}
