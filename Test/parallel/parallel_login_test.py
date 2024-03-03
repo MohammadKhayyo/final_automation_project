@@ -16,6 +16,7 @@ class ParallelLoginPageTests(unittest.TestCase):
         self.login_page = LoginPage(self.driver)
 
     def test_login_with_valid_user(self):
+        print("test_login_with_valid_user")
         for user in self.VALID_USERS:
             status = self.login_page.login(user['email'], user['password'])
             self.assertTrue(status)

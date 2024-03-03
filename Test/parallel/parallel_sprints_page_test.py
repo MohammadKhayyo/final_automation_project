@@ -22,10 +22,11 @@ class ParallelSprintPageTests(unittest.TestCase):
         self.home_page = HomePage(self.driver)
 
     def test_add_sprint_and_and_delete_it(self):
+        print("test_add_sprint_and_and_delete_it")
         task_name = generate_string.generate_text()
         status = self.sprints_Page.add_new_sprint(task_name)  # Use a unique name to ensure the test is reliable
         self.assertTrue(status, "add new sprint did not succeed")
-        status = self.sprints_Page.delete_sprint(task_name, browser=self.browser)
+        status = self.sprints_Page.delete_sprint(task_name)
         self.assertTrue(status, "Delete the sprint did not succeed")
 
     # def test_delete_all_sprints_that_have_same_name(self):

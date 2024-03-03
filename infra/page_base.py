@@ -11,6 +11,7 @@ class BasePage():
     MENU = (By.XPATH, "//button[@title='Open Menu']")
     DIET_NUTRITION_NAVIGATION = (By.XPATH, "//button/svg[text()='Diet & Nutrition']")
     Main_table = (By.XPATH, "//button[.//span[contains(text(), 'Main Table')]]")
+    Main_table_Tasks = (By.XPATH, '//*[@id="board-header"]/div/div/div[2]/div[2]/div[4]/button')
     board = (
         By.XPATH,
         "//*[starts-with(@id, 'row-header-currentBoard-') and contains(@id, '-notfloating-focus-name-')]/div[3]")
@@ -42,7 +43,6 @@ class BasePage():
         self._driver = driver
 
     def wait_for_element_and_click(self, locator):
-        print("wait_for_element_and_click")
         """Wait for an element to be clickable and then click."""
         WebDriverWait(self._driver, 30).until(EC.presence_of_element_located(locator))
         element = WebDriverWait(self._driver, 30).until(EC.element_to_be_clickable(locator))
@@ -50,11 +50,9 @@ class BasePage():
         return element
 
     def wait_presence_of_element_located(self, locator):
-        print("wait_presence_of_element_located")
         return WebDriverWait(self._driver, 30).until(EC.presence_of_element_located(locator))
 
     def type_text(self, locator, text):
-        print("type_text")
         """Type text into a field located by a specific locator."""
         field = self.wait_presence_of_element_located(locator)
         field.clear()
@@ -64,34 +62,36 @@ class BasePage():
         self._driver.get(url)
 
     def wait_for_url(self, url):
-        print("wait_for_url")
         WebDriverWait(self._driver, 30).until(lambda driver: url in driver.current_url)
 
     def wait_for_text(self, url):
-        print("wait_for_text")
         WebDriverWait(self._driver, 30).until(lambda driver: url in driver.current_url)
 
     def wait_for_click_able_element(self, locator):
         """Wait for an element to be clickable and then click."""
-        print("wait_for_click_able_element")
         self.wait_presence_of_element_located(locator)
         element = WebDriverWait(self._driver, 30).until(EC.element_to_be_clickable(locator))
         return element
 
     def switch_to_element(self, ELEMENT, tab):
-        print("switch_to_element")
         try:
             self.wait_for_click_able_element(self.MY_TEAM_SEARCH)
+            self.wait_for_click_able_element(ELEMENT)
+            self.wait_for_element_and_click(ELEMENT)
+            self.wait_for_click_able_element(tab)
+            self.wait_for_element_and_click(tab)
         except:
-            pass
-        self.wait_for_click_able_element(ELEMENT)
-        self.wait_for_element_and_click(ELEMENT)
-        self.wait_for_click_able_element(tab)
-        self.wait_for_element_and_click(tab)
+            self.wait_for_click_able_element(ELEMENT)
+            self.wait_for_element_and_click(ELEMENT)
+            self.wait_for_click_able_element(tab)
+            self.wait_for_element_and_click(tab)
 
-    def add_new(self, name, ELEMENT, NEW_ELEMENT, TEXT_NEW, NAME_NEW, name_new):
-        print("add_new")
+    def add_new(self, name, ELEMENT, NEW_ELEMENT, TEXT_NEW, NAME_NEW, name_new, Task=False):
         self.switch_to_element(ELEMENT, self.Main_table)
+        # if Task:
+        #     self.wait_for_click_able_element(self.Main_table_Tasks)
+        #     self.wait_for_element_and_click(self.Main_table_Tasks)
+            # self.switch_to_element(ELEMENT, self.Main_table_Tasks)
         self.wait_for_element_and_click(NEW_ELEMENT)
         try:
             name_field = self.wait_for_click_able_element(TEXT_NEW)
@@ -112,7 +112,6 @@ class BasePage():
         return True
 
     def select(self, select_Type, names, check_boxes, name):
-        print("select")
         count = 0
         list_EM = list()
         actions = ActionChains(self._driver)
@@ -133,9 +132,11 @@ class BasePage():
                     break
         return list_EM, count
 
-    def search(self, ELEMENT, name):
-        print("search")
-        # self.switch_to_element(ELEMENT, self.Main_table)
+    def search(self, ELEMENT, name, Task=False):
+        self.switch_to_element(ELEMENT, self.Main_table)
+        # if Task:
+        #     self.wait_for_click_able_element(self.Main_table_Tasks)
+        #     self.wait_for_element_and_click(self.Main_table_Tasks)
         self.wait_for_element_and_click(self.SEARCH_WITHOUT_CLICK)
         _input = self.wait_presence_of_element_located(self.SEARCH_WITH_CLICK)
         _input.send_keys(Keys.CONTROL + "a")
@@ -155,7 +156,6 @@ class BasePage():
             return None, None
 
     def filter_in_search_By_column_only(self, column_name):
-        print("filter_in_search_By_column_only")
         self.wait_for_element_and_click(self.button_filter_in_search)
         WebDriverWait(self._driver, 30).until(EC.presence_of_element_located(self.page_choose_columns))
         _text = WebDriverWait(self._driver, 30).until(EC.presence_of_element_located(self.text_how_many_columns))
@@ -167,8 +167,8 @@ class BasePage():
         self.wait_for_element_and_click(column_name)
         self.wait_for_element_and_click(self.button_filter_in_search)
 
-    def check_search(self, ELEMENT, name="New task"):
-        names, check_boxes = self.search(ELEMENT=ELEMENT, name=name)
+    def check_search(self, ELEMENT, name="New task", Task=False):
+        names, check_boxes = self.search(ELEMENT=ELEMENT, name=name, Task=Task)
         try:
             EM_names = self._driver.find_elements(*self.name_after_click_in_item_with_filter)
         except:
@@ -188,10 +188,9 @@ class BasePage():
         else:
             return False
 
-    def delete_equal(self, name, ELEMENT, select_Type="first", browser="chrome"):
-        print("delete_equal")
+    def delete_equal(self, name, ELEMENT, select_Type="first", Task=False):
         try:
-            names, check_boxes = self.search(ELEMENT=ELEMENT, name=name)
+            names, check_boxes = self.search(ELEMENT=ELEMENT, name=name, Task=Task)
             if names is None or len(names) == 0:
                 return True
             list_EM, count = self.select(select_Type=select_Type, name=name, names=names, check_boxes=check_boxes)
@@ -201,24 +200,24 @@ class BasePage():
                 return True
             self.wait_for_click_able_element(self.DELETE_BUTTON)
             self.wait_for_element_and_click(self.DELETE_BUTTON)
-            if browser == "chrome":
-                self.wait_for_click_able_element(self.DELETE_ANYWAY_BUTTON)
-                self.wait_for_element_and_click(self.DELETE_ANYWAY_BUTTON)
-            elif browser == "firefox":
-                self.wait_for_click_able_element(self.DELETE_ANYWAY_BUTTON_fire_fox)
-                self.wait_for_element_and_click(self.DELETE_ANYWAY_BUTTON_fire_fox)
+            self.wait_for_click_able_element(self.DELETE_ANYWAY_BUTTON)
+            self.wait_for_element_and_click(self.DELETE_ANYWAY_BUTTON)
+
             return True
         except:
             return False
 
-    def delete_all(self, ELEMENT, NAME_NEW, browser="chrome"):
-        print("delete_all")
+    def delete_all(self, ELEMENT, NAME_NEW, Task=False):
+        # self.switch_to_element(ELEMENT, self.Main_table)
+        # if Task:
+        #     self.wait_for_click_able_element(self.Main_table_Tasks)
+        #     self.wait_for_element_and_click(self.Main_table_Tasks)
         try:
             self.switch_to_element(ELEMENT, self.Main_table)
-            self.wait_for_click_able_element(NAME_NEW)
-            self.wait_for_element_and_click(NAME_NEW)
+            # self.wait_for_click_able_element(NAME_NEW)
+            # self.wait_for_click_able_element(NAME_NEW)
         except:
-            return True
+            return list()
         self.wait_for_click_able_element(ELEMENT)
         self.wait_for_click_able_element(self.board)
         self.wait_for_element_and_click(self.board)
@@ -229,36 +228,39 @@ class BasePage():
             WebDriverWait(self._driver, 30).until(EC.presence_of_all_elements_located(NAME_NEW))
             names = self._driver.find_elements(*NAME_NEW)
         if names is None or len(names) == 0:
-            return True
+            return list()
         list_all_element = list()
         for name in names:
             list_all_element.append(name.text)
         self.wait_for_click_able_element(ELEMENT)
-        self.wait_for_element_and_click(ELEMENT)
+        # self.wait_for_element_and_click(ELEMENT)
+        count = 0
         try:
             # WebDriverWait(self._driver, 30).until(EC.presence_of_all_elements_located(self.ALL_CHECK_BOX_))
             elements = self._driver.find_elements(*self.ALL_CHECK_BOX_)
         except:
-            return False
+            return None
         for element in elements:
             try:
                 element.click()
+                count += 1
             except:
                 pass
+        if count == 0:
+            return list_all_element
         self.wait_for_click_able_element(self.DELETE_BUTTON)
         self.wait_for_element_and_click(self.DELETE_BUTTON)
         self.wait_for_click_able_element(self.DELETE_ANYWAY_BUTTON)
         self.wait_for_element_and_click(self.DELETE_ANYWAY_BUTTON)
 
-        for element in elements:
-            try:
-                element.click()
-            except:
-                pass
+        # for element in elements:
+        #     try:
+        #         element.click()
+        #     except:
+        #         pass
         return list_all_element
 
     def UNDO_DELETE(self, list_all_element, NAME_NEW):
-        print("UNDO_DELETE")
         if not list_all_element or len(list_all_element) == 0:
             return True
         self.wait_for_element_and_click(self.UNDO)

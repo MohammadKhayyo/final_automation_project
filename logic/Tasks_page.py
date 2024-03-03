@@ -17,14 +17,14 @@ class TasksPage(BasePage):
 
     def add_new_task(self, task_name="New task"):
         return self.add_new(name=task_name, ELEMENT=self.TASK_ELEMENT, NEW_ELEMENT=self.NEW_TASK_ELEMENT,
-                            TEXT_NEW=self.TEXT_NEW_TASK, NAME_NEW=self.NAME_NEW_TASK, name_new="New task")
+                            TEXT_NEW=self.TEXT_NEW_TASK, NAME_NEW=self.NAME_NEW_TASK, name_new="New task", Task=True)
 
-    def delete_tasks(self, task_name="New task", select_Type="first", browser="chrome"):
-        return self.delete_equal(name=task_name, ELEMENT=self.TASK_ELEMENT, select_Type=select_Type, browser=browser)
+    def delete_tasks(self, task_name="New task", select_Type="first"):
+        return self.delete_equal(name=task_name, ELEMENT=self.TASK_ELEMENT, select_Type=select_Type, Task=True)
 
-    def delete_all_tasks(self, browser="chrome"):
-        return self.delete_all(self.TASK_ELEMENT, NAME_NEW=self.NAME_NEW_TASK, browser=browser)
+    def delete_all_tasks(self):
+        return self.delete_all(self.TASK_ELEMENT, NAME_NEW=self.NAME_NEW_TASK, Task=True)
 
-    def undo_delete_all_tasks(self, browser="chrome"):
-        _elements = self.delete_all_tasks(browser=browser)
+    def undo_delete_all_tasks(self):
+        _elements = self.delete_all_tasks()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_TASK)

@@ -29,12 +29,12 @@ class NonParallelSprintPageTests(unittest.TestCase):
 
     def test_delete_all_sprints_that_have_same_name(self):
         print("test_delete_all_sprints_that_have_same_name")
-        status = self.sprints_Page.delete_sprint("New sprint", "all", browser=self.browser)
+        status = self.sprints_Page.delete_sprint("New sprint", "all")
         self.assertTrue(status, "Delete all sprints that have the name did not succeed")
 
     def test_delete_all_sprint_and_undo(self):
         print("test_delete_all_sprint_and_undo")
-        status = self.sprints_Page.undo_delete_all_sprints(browser=self.browser)
+        status = self.sprints_Page.undo_delete_all_sprints()
         self.assertTrue(status, "test_delete_all_sprint_and_undo did not succeed")
 
     def tearDown(self):

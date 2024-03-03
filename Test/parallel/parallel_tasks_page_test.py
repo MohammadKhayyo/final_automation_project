@@ -22,6 +22,7 @@ class ParallelTasksPageTests(unittest.TestCase):
         self.home_page = HomePage(self.driver)
 
     def test_add_Task_and_and_delete_it(self):
+        print("test_add_Task_and_and_delete_it")
         task_name = generate_string.generate_text()
         status = self.tasks_Page.add_new_task(task_name)  # Use a unique name to ensure the test is reliable
         self.assertTrue(status, "add new task did not succeed")

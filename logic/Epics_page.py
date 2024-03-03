@@ -21,12 +21,12 @@ class EpicsPage(BasePage):
         return self.add_new(name=epic_name, ELEMENT=self.EPIC_ELEMENT, NEW_ELEMENT=self.NEW_EPIC_ELEMENT,
                             TEXT_NEW=self.TEXT_NEW_EPIC, NAME_NEW=self.NAME_NEW_EPIC, name_new="New epic")
 
-    def delete_epic(self, epic_name="New epic", select_Type="first", browser="chrome"):
-        return self.delete_equal(name=epic_name, ELEMENT=self.EPIC_ELEMENT, select_Type=select_Type, browser=browser)
+    def delete_epic(self, epic_name="New epic", select_Type="first"):
+        return self.delete_equal(name=epic_name, ELEMENT=self.EPIC_ELEMENT, select_Type=select_Type)
 
-    def delete_all_epic(self, browser="chrome"):
-        return self.delete_all(self.EPIC_ELEMENT, NAME_NEW=self.NAME_NEW_EPIC, browser=browser)
+    def delete_all_epic(self):
+        return self.delete_all(self.EPIC_ELEMENT, NAME_NEW=self.NAME_NEW_EPIC)
 
-    def undo_delete_all_epics(self, browser="chrome"):
-        _elements = self.delete_all_epic(browser=browser)
+    def undo_delete_all_epics(self):
+        _elements = self.delete_all_epic()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_EPIC)

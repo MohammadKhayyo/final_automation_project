@@ -28,12 +28,12 @@ class NonParallelTasksPageTests(unittest.TestCase):
 
     def test_delete_all_tasks_that_have_same_name(self):
         print("test_delete_all_tasks_that_have_same_name")
-        status = self.tasks_Page.delete_tasks("New task", "all", browser=self.browser)
+        status = self.tasks_Page.delete_tasks("New task", "all")
         self.assertTrue(status, "Delete all tasks that have the name did not succeed")
 
     def test_delete_all_task_and_undo(self):
         print("test_delete_all_task_and_undo")
-        status = self.tasks_Page.undo_delete_all_tasks(browser=self.browser)
+        status = self.tasks_Page.undo_delete_all_tasks()
         self.assertTrue(status, "test_delete_all_task_and_undo did not succeed")
 
     def tearDown(self):

@@ -22,10 +22,11 @@ class ParallelEpicsPageTests(unittest.TestCase):
         self.home_page = HomePage(self.driver)
 
     def test_add_epic_and_and_delete_it(self):
+        print("test_add_epic_and_and_delete_it")
         task_name = generate_string.generate_text()
         status = self.epics_Page.add_new_epic(task_name)  # Use a unique name to ensure the test is reliable
         self.assertTrue(status, "add new task did not succeed")
-        status = self.epics_Page.delete_epic(task_name, browser=self.browser)
+        status = self.epics_Page.delete_epic(task_name)
         self.assertTrue(status, "Delete The epic did not succeed")
 
     # def test_delete_all_epics_that_have_same_name(self):

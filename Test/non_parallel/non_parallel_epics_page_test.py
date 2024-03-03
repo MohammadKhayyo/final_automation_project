@@ -14,6 +14,7 @@ class NonParallelEpicsPageTests(unittest.TestCase):
         default_browser = 'firefox'  # Specify your default browser here
         self.browser = getattr(self.__class__, 'browser', default_browser)
         self.driver = self.browser_wrapper.get_driver(browser=self.browser)
+        # self.driver.maximize_window()
         self.login_page = LoginPage(self.driver)
         user = self.VALID_USERS[0]
         self.login_page.login(user['email'], user['password'])
@@ -35,7 +36,7 @@ class NonParallelEpicsPageTests(unittest.TestCase):
 
     def test_delete_all_epic_and_undo(self):
         print("test_delete_all_epic_and_undo")
-        status = self.epics_Page.undo_delete_all_epics(browser=self.browser)
+        status = self.epics_Page.undo_delete_all_epics()
         print(status)
         self.assertTrue(status, "test_delete_all_epic_and_undo did not succeed")
 

@@ -17,9 +17,9 @@ from Test.non_parallel.non_parallel_home_page_test import NonParallelHomePageTes
 # [LoginPageTests, HomePageTests, TasksPageTests, SprintPageTests, EpicsPageTests]
 
 
-serial_cases = [NonParallelEpicsPageTests]
-parallel_cases = [ParallelEpicsPageTests]
-test_cases = [NonParallelEpicsPageTests, ParallelEpicsPageTests]
+serial_cases = [NonParallelTasksPageTests]
+parallel_cases = [ParallelTasksPageTests]
+test_cases = [NonParallelTasksPageTests, ParallelTasksPageTests]
 
 
 # serial_cases = [NonParallelTasksPageTests, NonParallelSprintPageTests, NonParallelEpicsPageTests,
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     browsers = config["browser_types"]
     grid_url = config["hub"]
     if is_parallel:
-        # run_tests_for_browser_parallel(browsers, parallel_cases)
+        run_tests_for_browser_parallel(browsers, parallel_cases)
         run_tests_for_browser_serial(browsers, serial_cases)
         # dived_tests_parallel_non_parallel(test_cases)
         # run_tests_for_browser_parallel(browsers, parallel_cases)

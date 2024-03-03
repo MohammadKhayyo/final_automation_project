@@ -8,7 +8,6 @@
   "platform": "windows",
   "browser_types": [
     "chrome",
-    "firefox",
-    "edge"
+    "firefox"
   ]
 }
