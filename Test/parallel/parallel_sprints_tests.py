@@ -29,6 +29,10 @@ class ParallelSprintsTests(unittest.TestCase):
         deletionStatus = self.sprints_Interface.removeSprint(sprint_name)
         self.assertTrue(deletionStatus, "Failed to delete the sprint.")
 
+    def test_find_sprints_by_name(self):
+        search_result = self.sprints_Interface.findTasksByName(name="New sprint")
+        self.assertTrue(search_result, "Failed to find the specified sprint")
+
     def tearDown(self):
         if self.driver:
             self.driver.quit()

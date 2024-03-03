@@ -29,7 +29,9 @@ class ParallelRetrospectivesTests(unittest.TestCase):
         deletionStatus = self.retrospectives_page.bulkDeleteRetrospectives(task_name)
         self.assertTrue(deletionStatus, "Deletion of the retrospective failed")
 
-
+    def test_find_sprints_by_name(self):
+        search_result = self.retrospectives_page.findTasksByName(name="New feedback")
+        self.assertTrue(search_result, "Failed to find the specified retrospective")
 
     def tearDown(self):
         if self.driver:

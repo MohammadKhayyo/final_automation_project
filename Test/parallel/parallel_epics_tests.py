@@ -29,6 +29,10 @@ class ParallelEpicsTests(unittest.TestCase):
         deletionOutcome = self.epics_Page.bulkDeleteEpics(epic_name)
         self.assertTrue(deletionOutcome, "Failed to delete the epic")
 
+    def test_find_sprints_by_name(self):
+        search_result = self.epics_Page.findTasksByName(name="New epic")
+        self.assertTrue(search_result, "Failed to find the specified epic")
+
     def tearDown(self):
         if self.driver:
             self.driver.quit()

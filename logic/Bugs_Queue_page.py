@@ -29,3 +29,6 @@ class BugsQueuePage(BasePage):
     def revertBulkBugDeletion(self):
         _elements = self.delete_all_bugs_queue()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_BUGS_QUEUE)
+
+    def findTasksByName(self, name="New bug"):
+        return self.check_search(ELEMENT=self.BUGS_QUEUE_ELEMENT, name=name)

@@ -29,9 +29,9 @@ class ParallelTasksTests(unittest.TestCase):
         deletion_success = self.tasks_Interface.remove_task(task_name=unique_task_name)
         self.assertTrue(deletion_success, "Task deletion did not proceed as expected.")
 
-    def test_search_in_task(self):
-        status = self.tasks_Interface.test_search_in_task(name="New task")
-        self.assertTrue(status, "search did not succeed")
+    def test_find_tasks_by_name(self):
+        search_result = self.tasks_Interface.findTasksByName(name="New task")
+        self.assertTrue(search_result, "Failed to find the specified task")
 
     def tearDown(self):
         if self.driver:

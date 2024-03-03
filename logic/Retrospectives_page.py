@@ -29,3 +29,6 @@ class RetrospectivesPage(BasePage):
     def revertBulkDeletion(self):
         _elements = self.delete_all_retrospectives()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_RETROSPECTIVES)
+
+    def findTasksByName(self, name="New feedback"):
+        return self.check_search(ELEMENT=self.RETROSPECTIVES_ELEMENT, name=name)

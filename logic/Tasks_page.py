@@ -29,5 +29,5 @@ class TasksPage(BasePage):
         _elements = self.delete_all_tasks()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_TASK)
 
-    def test_search_in_task(self, name="New sprint"):
+    def findTasksByName(self, name="New sprint"):
         return self.check_search(ELEMENT=self.TASK_ELEMENT, name=name)

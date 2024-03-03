@@ -30,3 +30,6 @@ class EpicsPage(BasePage):
     def revertBulkDeletion(self):
         _elements = self.delete_all_epic()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_EPIC)
+
+    def findTasksByName(self, name="New epic"):
+        return self.check_search(ELEMENT=self.EPIC_ELEMENT, name=name)

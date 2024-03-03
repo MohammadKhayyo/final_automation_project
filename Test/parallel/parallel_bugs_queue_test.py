@@ -26,8 +26,12 @@ class ParallelBugsQueueTests(unittest.TestCase):
         unique_bug_name = generate_string.create_secure_string()
         creationSuccess = self.bugs_queue_page.add_new_bugs_queue(unique_bug_name)
         self.assertTrue(creationSuccess, "Failed to add a new bug to the queue")
-        deletionSuccess = self.bugs_queue_page.delete_equal(unique_bug_name)
+        deletionSuccess = self.bugs_queue_page.bulkDeleteBugs(unique_bug_name)
         self.assertTrue(deletionSuccess, "Failed to remove the bug from the queue")
+
+    def test_find_sprints_by_name(self):
+        search_result = self.bugs_queue_page.findTasksByName(name="New bug")
+        self.assertTrue(search_result, "Failed to find the specified bug")
 
     def tearDown(self):
         if self.driver:

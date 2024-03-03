@@ -27,3 +27,6 @@ class SprintsPage(BasePage):
     def revertAllSprintDeletions(self):
         _elements = self.delete_all_sprint()
         return self.UNDO_DELETE(list_all_element=_elements, NAME_NEW=self.NAME_NEW_SPRINT)
+
+    def findTasksByName(self, name="New sprint"):
+        return self.check_search(ELEMENT=self.SPRINT_ELEMENT, name=name)
