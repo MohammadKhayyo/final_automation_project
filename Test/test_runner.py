@@ -25,6 +25,8 @@ parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsT
                         ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
 all_test_groups = serial_test_groups + parallel_test_groups
 
+demo_test = [ParallelBugsQueueTests]
+
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
     test_group.browser = browser_name
@@ -42,7 +44,7 @@ def run_tests_for_browser_parallel(browser_list, test_groups):
     task_list = [(browser, test_case) for browser in browser_list for test_case in test_groups]
 
     with ThreadPoolExecutor(max_workers=4) as executor:
-        [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
+        futures = [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
 
 
 if __name__ == "__main__":

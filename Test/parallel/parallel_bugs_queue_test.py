@@ -30,7 +30,7 @@ class ParallelBugsQueueTests(unittest.TestCase):
         self.assertTrue(deletionSuccess, "Failed to remove the bug from the queue")
 
     def test_find_sprints_by_name(self):
-        search_result = self.bugs_queue_page.findTasksByName(name="New bug")
+        search_result = self.bugs_queue_page.findTasksByName(name="Birthday notification")
         self.assertTrue(search_result, "Failed to find the specified bug")
 
     def tearDown(self):
