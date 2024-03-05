@@ -23,7 +23,7 @@ class SerialHomeTests(unittest.TestCase):
         environment = self.home_page.changeEnvironment(environment_name="sales CRM")
         self.assertEqual(environment, "sales CRM", "Failed to switch to the sales CRM environment")
         environment = self.home_page.changeEnvironment(environment_name="dev")
-        self.assertEqual(environment, "development", "Failed to switch back to the development environment")
+        self.assertEqual(environment, "dev", "Failed to switch back to the development environment")
 
     def test_sign_out(self):
         operationResult = self.home_page.sign_out()

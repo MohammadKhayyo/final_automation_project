@@ -1,5 +1,5 @@
 {
-  "hub": "http://172.16.22.18:4444",
+  "hub": "http://10.81.0.29:4444",
   "url": "https://mohammadkhayyo12account.monday.com",
   "grid": true,
   "parallel": true,
