@@ -19,6 +19,7 @@ class TestGameAPI(unittest.TestCase):
         self.games_api = GamesApi()
         self.API_wrapper = APIWrapper()
 
+    @patch('logic_api.Games_api.GamesApi.get_games')
     def test_get_games(self):
         """Test case for getting games for a specific year."""
         year = 2021
@@ -32,26 +33,7 @@ class TestGameAPI(unittest.TestCase):
         except ApiException as e:
             self.fail(f"API exception: {e}")
 
-    # @patch('logic_api.Games_api.GamesApi.get_games')
-    # def test_get_games(self, mock_get_games):
-    #     """
-    #     Test whether the Games API can retrieve games for a given year.
-    #     - Uses 'year' parameter to fetch games from the specific season.
-    #     - Asserts that the response is not empty.
-    #     - Checks if each game in the response has the correct 'season' value using a helper function.
-    #     - Asserts that the check returns True, indicating the response has the expected data.
-    #     """
-    #     # Arrange
-    #     mock_get_games.return_value = [{'id': 1, 'season': self.year}]
-    #     params = {'year': self.year}
-    #
-    #     # Act
-    #     response = self.games_api.get_games(**params)
-    #
-    #     # Assert
-    #     self.assertTrue(response)
-    #     self.assertEqual(response[0]['season'], self.year)
-
+    @patch('logic_api.Games_api.GamesApi.get_games')
     def test_get_game_media(self):
         """Test case for getting game media information for a specific year."""
         year = 2021
@@ -64,25 +46,6 @@ class TestGameAPI(unittest.TestCase):
             self.assertTrue(status)
         except ApiException as e:
             self.fail(f"API exception: {e}")
-
-    # @patch('logic_api.Games_api.GamesApi.get_game_media')
-    # def test_get_game_media(self, mock_get_game_media):
-    #     """
-    #     Test whether the Games API can retrieve media information for games from a specific year.
-    #     - Uses 'year' parameter to fetch game media.
-    #     - Asserts that the response is not empty.
-    #     - Verifies that the media information corresponds to the specified year.
-    #     """
-    #     # Arrange
-    #     mock_get_game_media.return_value = [{'id': 1, 'season': self.year}]
-    #     params = {'year': self.year}
-    #
-    #     # Act
-    #     response = self.games_api.get_game_media(**params)
-    #
-    #     # Assert
-    #     self.assertTrue(response)
-    #     self.assertEqual(response[0]['season'], self.year)
 
     @patch('logic_api.Games_api.GamesApi.get_player_game_stats')
     def test_get_player_game_stats(self, mock_get_player_game_stats):
