@@ -1,5 +1,5 @@
 {
-  "hub": "http://10.81.0.29:4444",
+  "hub": "http://192.168.56.1:4444",
   "url": "https://mohammadkhayyo12account.monday.com",
   "grid": true,
   "parallel": true,
@@ -9,6 +9,7 @@
   "platform": "windows",
   "browser_types": [
     "chrome",
-    "firefox"
+    "firefox",
+    "edge"
   ]
 }

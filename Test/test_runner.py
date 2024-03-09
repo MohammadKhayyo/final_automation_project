@@ -44,7 +44,7 @@ def run_tests_for_browser_parallel(browser_list, test_groups):
     task_list = [(browser, test_case) for browser in browser_list for test_case in test_groups]
 
     with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
+        [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
 
 
 if __name__ == "__main__":
@@ -56,6 +56,6 @@ if __name__ == "__main__":
     grid_url = settings["hub"]
     if is_parallel:
         run_tests_for_browser_parallel(browsers, parallel_test_groups)
-        run_tests_for_browser_serial(browsers, serial_test_groups)
+        # run_tests_for_browser_serial(browsers, serial_test_groups)
     elif is_serial:
         run_tests_for_browser_serial(browsers, all_test_groups)
