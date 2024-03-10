@@ -7,10 +7,11 @@ class TestVenuesApi(unittest.TestCase):
 
     def setUp(self):
         self.venues_api = VenuesApi()
-        self.mock_venue = cfbd.Venue(id=3997, city="New Haven", name="Yale Bowl")
+        # self.mock_venue = cfbd.Venue(id=3997, city="New Haven", name="Yale Bowl")
 
     def test_get_venue_information(self):
         # Arrange
+        self.mock_venue = cfbd.Venue(id=3997, city="New Haven", name="Yale Bowl")
         params = {'id': 3997, 'city': "New Haven", 'name': "Yale Bowl"}
 
         # Act
