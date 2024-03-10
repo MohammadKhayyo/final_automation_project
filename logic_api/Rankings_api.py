@@ -11,7 +11,7 @@ class RankingsApi():
         self.API_wrapper = APIWrapper()
         self.api = cfbd.RankingsApi(self.API_wrapper.client)
 
-    def get_rankings(self, year: int, week: int = None, season_type: str = "regular") -> List[Any]:
+    def get_rankings(self, **kwargs) -> List[Any]:
         """
         Fetches rankings for a given year and optional week and season type.
 
@@ -20,16 +20,11 @@ class RankingsApi():
         :param season_type: The season type, "regular" or "postseason".
         :return: A list of rankings data.
         """
-        kwargs = {
-            "year": year,
-            "week": week,
-            "season_type": season_type
-        }
         # Filtering out None values
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
         return self.API_wrapper.fetch_data(self.api.get_rankings, **kwargs)
 
-    def is_rank_ascending(self, response, poll_name):
+    def is_rank_ascending(self, response):
         """
         Checks if ranks within a specified poll are in ascending order.
 
@@ -39,12 +34,11 @@ class RankingsApi():
         """
         for entry in response:
             for poll in getattr(entry, 'polls', []):
-                if getattr(poll, 'poll') == poll_name:
-                    previous_rank = 0
-                    for rank in getattr(poll, 'ranks', []):
-                        current_rank = getattr(rank, 'rank')
-                        if current_rank < previous_rank:
-                            return False
-                        previous_rank = current_rank
-                    return True
+                previous_rank = 0
+                for rank in getattr(poll, 'ranks', []):
+                    current_rank = getattr(rank, 'rank')
+                    if current_rank < previous_rank:
+                        return False
+                    previous_rank = current_rank
+                return True
         return False
