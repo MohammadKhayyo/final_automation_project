@@ -21,27 +21,39 @@ class TestGameAPI(unittest.TestCase):
 
     def test_get_games(self):
         """Test case for getting games for a specific year."""
+        # Arrange
         year = 2021
+        params = {'year': year}
+
+        # Act
         try:
-            params = {'year': year}
             response = self.games_api.get_games(**params)
-            self.assertTrue(response)
+
+            # Assert
+            self.assertTrue(response, "The response should not be empty.")
+
             params = {'season': year}
             status = self.API_wrapper.check_response_content(response_json=response, **params)
-            self.assertTrue(status)
+            self.assertTrue(status, "The status should be True indicating correct response content.")
         except ApiException as e:
             self.fail(f"API exception: {e}")
 
     def test_get_game_media(self):
         """Test case for getting game media information for a specific year."""
+        # Arrange
         year = 2021
+        params = {'year': year}
+
+        # Act
         try:
-            params = {'year': year}
             response = self.games_api.get_game_media(**params)
-            self.assertTrue(response)
+
+            # Assert
+            self.assertTrue(response, "The response should not be empty.")
+
             params = {'season': year}
             status = self.API_wrapper.check_response_content(response_json=response, **params)
-            self.assertTrue(status)
+            self.assertTrue(status, "The status should be True indicating correct response content.")
         except ApiException as e:
             self.fail(f"API exception: {e}")
 
