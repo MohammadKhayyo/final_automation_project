@@ -19,7 +19,6 @@ class TestGameAPI(unittest.TestCase):
         self.games_api = GamesApi()
         self.API_wrapper = APIWrapper()
 
-    @patch('logic_api.Games_api.GamesApi.get_games')
     def test_get_games(self):
         """Test case for getting games for a specific year."""
         year = 2021
@@ -33,7 +32,6 @@ class TestGameAPI(unittest.TestCase):
         except ApiException as e:
             self.fail(f"API exception: {e}")
 
-    @patch('logic_api.Games_api.GamesApi.get_games')
     def test_get_game_media(self):
         """Test case for getting game media information for a specific year."""
         year = 2021
