@@ -10,7 +10,7 @@ class SerialHomeTests(unittest.TestCase):
 
     def setUp(self):
         self.browser_wrapper = WebDriverManager()
-        default_browser = 'firefox'  # Specify your default browser here
+        default_browser = 'chrome'  # Specify your default browser here
         self.browser = getattr(self.__class__, 'browser', default_browser)
         self.driver = self.browser_wrapper.initialize_web_driver(browser_name=self.browser)
         self.login_page = LoginPage(self.driver)
