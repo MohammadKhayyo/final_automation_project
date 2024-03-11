@@ -25,7 +25,7 @@ parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsT
                         ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
 all_test_groups = serial_test_groups + parallel_test_groups
 
-demo_test = [SerialHomeTests]
+demo_test = [ParallelLoginTests]
 
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
@@ -54,8 +54,9 @@ if __name__ == "__main__":
     is_serial = not settings['parallel']
     browsers = settings["browser_types"]
     grid_url = settings["hub"]
-    if is_parallel:
-        run_tests_for_browser_parallel(browsers, parallel_test_groups)
-        run_tests_for_browser_serial(browsers, serial_test_groups)
-    elif is_serial:
-        run_tests_for_browser_serial(browsers, all_test_groups)
+    # if is_parallel:
+    #     run_tests_for_browser_parallel(browsers, parallel_test_groups)
+    #     run_tests_for_browser_serial(browsers, serial_test_groups)
+    # elif is_serial:
+    #     run_tests_for_browser_serial(browsers, all_test_groups)
+    run_tests_for_browser_parallel(browsers, demo_test)

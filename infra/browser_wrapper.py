@@ -23,8 +23,8 @@ class WebDriverManager:
         options.add_argument("--disable-dev-shm-usage")
         return options
 
-    def initialize_web_driver(self, browser_name):
-        if self.settings["grid"]:
+    def initialize_web_driver(self, browser_name, grid=True):
+        if self.settings["grid"] and grid:
             options = self.set_up_capabilities(browser_name)
             self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=options)
         else:

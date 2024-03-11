@@ -1,7 +1,7 @@
 {
   "hub": "http://192.168.20.161:4444",
   "url": "https://mohammadkhayyo12account.monday.com",
-  "grid": false,
+  "grid": true,
   "parallel": true,
   "serial": false,
   "demo": true,
