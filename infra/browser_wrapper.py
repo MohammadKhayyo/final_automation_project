@@ -16,7 +16,7 @@ class WebDriverManager:
             self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=options)
         else:
             if browser_name.lower() == 'chrome':
-                service = ChromeService(executable_path="/usr/local/bin/chromedriver")
+                service = ChromeService(executable_path=" /usr/bin/google-chrome")
                 self.driver = webdriver.Chrome(service=service)
                 # self.driver = webdriver.Chrome()
             elif browser_name.lower() == 'firefox':
