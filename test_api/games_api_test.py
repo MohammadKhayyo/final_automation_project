@@ -100,6 +100,7 @@ class TestGameAPI(unittest.TestCase):
         params = {'team': self.team}
 
         # Act
+
         response = self.games_api.get_team_records(**params)
 
         # Assert

@@ -13,10 +13,11 @@ class TestRankingsApi(unittest.TestCase):
 
     def test_rank_ascending_order(self):
         """
-        Test that ranks within the specified poll are in ascending order.
+        Test that ranks are in ascending order.
         """
         # Arrange
         params = {'year': self.year, 'week': self.week, 'season_type': self.season_type}
+
         # Act
         response = self.rankings_api.get_rankings(**params)
 
