@@ -7,27 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  selenium-tests:
+  build:
     runs-on: ubuntu-latest
 
-    services:
-      selenium-hub:
-        image: selenium/hub:latest
-        ports:
-          - 4444:4444
-
-      chrome-node:
-        image: selenium/node-chrome:latest
-        env:
-          SE_EVENT_BUS_HOST: selenium-hub
-          SE_EVENT_BUS_PUBLISH_PORT: 4444
-          SE_EVENT_BUS_SUBSCRIBE_PORT: 4444
-        ports:
-          - 6900:5900  # For VNC if needed
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -42,30 +26,16 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
 
-      - name: Update config_info.json with Selenium Grid URL
+      - name: Update config_info.json with the external Selenium Grid URL
         run: |
-          SELENIUM_HUB_URL="http://localhost:4444/wd/hub"
-          jq --arg hub_url "$SELENIUM_HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
+          # Use the actual IP address or DNS name of your Selenium Grid Hub
+          HUB_URL="http://<EXTERNAL-SELENIUM-HUB-IP-OR-DNS>:4444/wd/hub"
+          jq --arg hub_url "$HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
 
       - name: Display updated config_info.json for debugging
         run: cat config_info.json
 
-      - name: Wait for Selenium Hub to be ready
-        run: |
-          for i in {1..10}; do
-            if curl -s http://localhost:4444/wd/hub/status | jq -e '.value.ready' >/dev/null; then
-              echo "Selenium Hub is ready."
-              break
-            fi
-            echo "Waiting for the Selenium Hub..."
-            sleep 5
-          done
-
       - name: Run tests
         run: |
           python -m unittest Test/test_runner.py
-          # Here you would run your actual test command.
-          # For example, if you're using pytest:
-          # pytest your_test_script.py
-          # Replace this line with your test execution command.
-          echo "Replace this line with your test execution command."
+
