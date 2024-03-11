@@ -45,7 +45,8 @@ jobs:
       - name: Update config_info.json with Selenium Grid URL
         run: |
           SELENIUM_HUB_URL="http://localhost:4444/wd/hub"
-          jq --arg hub_url "$SELENIUM_HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json
+          jq --arg hub_url "$SELENIUM_HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
+
       - name: Display updated config_info.json for debugging
         run: cat config_info.json
 
