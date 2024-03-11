@@ -15,7 +15,11 @@ class WebDriverManager:
             self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=options)
         else:
             if browser_name.lower() == 'chrome':
-                self.driver = webdriver.Chrome()
+                options = webdriver.ChromeOptions()
+                options.add_argument("--headless")
+                options.add_argument("--no-sandbox")  # This line is often necessary in CI environments
+                options.add_argument("--disable-dev-shm-usage")  # This can help in environments with limited resources
+                self.driver = webdriver.Chrome(options=options)
             elif browser_name.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
             elif browser_name.lower() == 'edge':
