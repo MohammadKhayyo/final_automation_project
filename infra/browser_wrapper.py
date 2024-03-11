@@ -38,6 +38,7 @@ class WebDriverManager:
 
         self.driver.get(self.settings["url"])
         self.driver.maximize_window()
+        # self.driver.fullscreen_window()
         return self.driver
 
     def set_up_capabilities(self, browser_type):
