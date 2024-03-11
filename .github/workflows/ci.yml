@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     services:
       selenium-hub:
         image: selenium/hub:latest
@@ -16,7 +17,7 @@ jobs:
           - 4444:4444
       chrome-node:
         image: selenium/node-chrome:latest
-        depends_on:
+        depends-on:
           - selenium-hub
         env:
           SE_EVENT_BUS_HOST: selenium-hub
@@ -37,21 +38,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Ensure jq is installed (it usually is in the default ubuntu-latest environment)
       - name: Install jq
         run: sudo apt-get install jq
 
-      # Update config_info.json with the correct Selenium Grid hub URL
       - name: Update config_info.json with Selenium Grid URL
         run: |
           SELENIUM_HUB_URL="http://localhost:4444/wd/hub"
           jq --arg hub_url "$SELENIUM_HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
 
-      # Optionally, display the updated config_info.json for verification
       - name: Display updated config_info.json
         run: cat config_info.json
 
-      # Proceed with any other setup or steps, then run your tests
       - name: Run tests
         run: python -m unittest Test/test_runner.py
         env:
