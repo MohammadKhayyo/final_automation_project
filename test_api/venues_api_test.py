@@ -11,7 +11,7 @@ class TestVenuesApi(unittest.TestCase):
 
     def test_get_venue_information(self):
         # Arrange
-        params = {'id': 3997, 'city': "New Haven", 'name': "Yale Bowl"}
+        # params = {'id': 3997, 'city': "New Haven", 'name': "Yale Bowl"}
 
         # Act
         response = self.venues_api.get_venues()
