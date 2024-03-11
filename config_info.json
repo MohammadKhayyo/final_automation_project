@@ -1,5 +1,5 @@
 {
-  "hub": "http://192.168.20.161:4444",
+  "hub": "http://10.81.0.16:4444",
   "url": "https://mkhayyo7.monday.com",
   "grid": true,
   "parallel": true,
