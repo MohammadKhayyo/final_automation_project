@@ -26,21 +26,23 @@ class WebDriverManager:
         # self.driver.fullscreen_window()
         return self.driver
 
-
     def set_up_capabilities(self, browser_type):
-            options = None
-            if browser_type.lower() == 'chrome':
-                options = webdriver.ChromeOptions()
-            elif browser_type.lower() == 'firefox':
-                options = webdriver.FirefoxOptions()
-            elif browser_type.lower() == 'edge':
-                options = webdriver.EdgeOptions()
-            if options is not None:
-                platform_name = self.settings["platform"]
-                options.add_argument(f'--platformName={platform_name}')
-                return options
-            else:
-                raise ValueError("Unsupported browser type")
+        options = None
+        if browser_type.lower() == 'chrome':
+            options = webdriver.ChromeOptions()
+        elif browser_type.lower() == 'firefox':
+            options = webdriver.FirefoxOptions()
+        elif browser_type.lower() == 'edge':
+            options = webdriver.EdgeOptions()
+        if options is not None:
+            platform_name = self.settings["platform"]
+            options.add_argument(f'--platformName={platform_name}')
+            options.add_argument("--headless")
+            options.add_argument("--no-sandbox")  # This line is often necessary in CI environments
+            options.add_argument("--disable-dev-shm-usage")  # This can help in environments with limited resources
+            return options
+        else:
+            raise ValueError("Unsupported browser type")
 
     def create_local_driver(self, browser_name):
         browser_name_lower = browser_name.lower()
