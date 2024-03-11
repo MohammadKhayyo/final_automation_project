@@ -1,5 +1,6 @@
 from selenium import webdriver
 from infra.configurations import ConfigurationManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 
 class WebDriverManager:
@@ -15,7 +16,9 @@ class WebDriverManager:
             self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=options)
         else:
             if browser_name.lower() == 'chrome':
-                self.driver = webdriver.Chrome()
+                service = ChromeService(executable_path="/usr/local/bin/chromedriver")
+                self.driver = webdriver.Chrome(service=service)
+                # self.driver = webdriver.Chrome()
             elif browser_name.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
             elif browser_name.lower() == 'edge':
