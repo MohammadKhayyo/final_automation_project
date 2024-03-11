@@ -1,4 +1,4 @@
-name: Selenium CI
+name: Python application CI
 
 on:
   push:
@@ -7,11 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -26,10 +27,15 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
 
-      - name: Update config_info.json with the external Selenium Grid URL
+      # Assuming 'fetch-hub-url-command' is a placeholder for your actual command to get the hub URL
+      - name: Fetch Selenium Hub URL and Update config_info.json
         run: |
-          # Use the actual IP address or DNS name of your Selenium Grid Hub
-          HUB_URL="http://<EXTERNAL-SELENIUM-HUB-IP-OR-DNS>:4444/wd/hub"
+          HUB_URL=$(fetch-hub-url-command)
+          if [ -z "$HUB_URL" ]; then
+            echo "Failed to fetch the Selenium Hub URL"
+            exit 1
+          fi
+          echo "Fetched Hub URL: $HUB_URL"
           jq --arg hub_url "$HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
 
       - name: Display updated config_info.json for debugging
@@ -38,4 +44,3 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest Test/test_runner.py
-
