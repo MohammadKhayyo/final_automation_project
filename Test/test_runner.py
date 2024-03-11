@@ -55,8 +55,7 @@ if __name__ == "__main__":
     browsers = settings["browser_types"]
     grid_url = settings["hub"]
     if is_parallel:
-        # run_tests_for_browser_parallel(browsers, parallel_test_groups)
-        # run_tests_for_browser_serial(browsers, serial_test_groups)
-        run_tests_for_browser_serial(browsers, demo_test)
+        run_tests_for_browser_parallel(browsers, parallel_test_groups)
+        run_tests_for_browser_serial(browsers, serial_test_groups)
     elif is_serial:
         run_tests_for_browser_serial(browsers, all_test_groups)

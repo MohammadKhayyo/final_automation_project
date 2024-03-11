@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 
 class LoginPage(BasePage):
-    URL_BOARD = "https://mohammadkhayyo12account.monday.com"
+    URL_BOARD = "https://mkhayyo7.monday.com"
     LOGIN = (By.XPATH, '//*[@id="login-monday-container"]/div/div[2]/div/div[1]/div/div[4]/div/button')
     EMAIL = (By.XPATH, '//*[@id="user_email"]')
     PASSWORD = (By.XPATH, '//*[@id="user_password"]')
