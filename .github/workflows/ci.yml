@@ -63,6 +63,7 @@ jobs:
 
       - name: Run tests
         run: |
+          python -m unittest Test/test_runner.py
           # Here you would run your actual test command.
           # For example, if you're using pytest:
           # pytest your_test_script.py
