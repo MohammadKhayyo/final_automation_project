@@ -1,6 +1,5 @@
 from selenium import webdriver
 from infra.configurations import ConfigurationManager
-from selenium.webdriver.chrome.service import Service as ChromeService
 
 
 class WebDriverManager:
@@ -16,9 +15,7 @@ class WebDriverManager:
             self.driver = webdriver.Remote(command_executor=self.settings["hub"], options=options)
         else:
             if browser_name.lower() == 'chrome':
-                service = ChromeService(executable_path=" /usr/bin/google-chrome")
-                self.driver = webdriver.Chrome(service=service)
-                # self.driver = webdriver.Chrome()
+                self.driver = webdriver.Chrome()
             elif browser_name.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
             elif browser_name.lower() == 'edge':
@@ -40,9 +37,6 @@ class WebDriverManager:
         if options is not None:
             platform_name = self.settings["platform"]
             options.add_argument(f'--platformName={platform_name}')
-            options.add_argument("--headless")
-            options.add_argument("--no-sandbox")  # This line is often necessary in CI environments
-            options.add_argument("--disable-dev-shm-usage")  # This can help in environments with limited resources
             return options
         else:
             raise ValueError("Unsupported browser type")
