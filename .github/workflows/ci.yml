@@ -40,4 +40,4 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m unittest Test/test_runner.py
+          python -m unittest Test/non_parallel/serial_home_tests.py
