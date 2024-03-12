@@ -37,3 +37,7 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest test_api/test_runner.py
+
+      - name: Run tests
+        run: |
+          python -m unittest Test/non_parallel/serial_home_tests.py
