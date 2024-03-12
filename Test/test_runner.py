@@ -31,7 +31,7 @@ parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsT
                         ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
 all_test_groups = serial_test_groups + parallel_test_groups
 
-demo_test = [SerialHomeTests, SerialTasksTests]
+demo_test = [SerialHomeTests]
 
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
@@ -65,4 +65,4 @@ if __name__ == "__main__":
     #     run_tests_for_browser_serial(browsers, serial_test_groups)
     # elif is_serial:
     #     run_tests_for_browser_serial(browsers, all_test_groups)
-    run_tests_for_browser_serial(browsers, demo_test)
+    run_tests_for_browser_parallel(browsers, demo_test)
