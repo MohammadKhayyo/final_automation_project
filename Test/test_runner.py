@@ -31,7 +31,7 @@ parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsT
                         ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
 all_test_groups = serial_test_groups + parallel_test_groups
 
-demo_test = [SerialHomeTests]
+demo_test = [SerialHomeTests ]
 
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
