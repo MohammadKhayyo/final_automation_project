@@ -1,6 +1,12 @@
+import sys
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+
+try:
+    sys.path.insert(0, '/usr/src/tests')
+except:
+    pass
 from infra.configurations import ConfigurationManager
 from Test.parallel.parallel_tasks_tests import ParallelTasksTests
 from Test.parallel.parallel_sprints_tests import ParallelSprintsTests
@@ -25,7 +31,7 @@ parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsT
                         ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
 all_test_groups = serial_test_groups + parallel_test_groups
 
-demo_test = [ParallelLoginTests]
+demo_test = [SerialHomeTests, SerialTasksTests]
 
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
