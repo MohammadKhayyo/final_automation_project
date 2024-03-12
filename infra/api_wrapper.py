@@ -1,5 +1,5 @@
 import cfbd
-from infra.configurations import ConfigurationManager
+from configurations import ConfigurationManager
 import json
 from typing import List, Any, Callable
 

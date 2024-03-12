@@ -1,4 +1,4 @@
-name: Python application CI
+name: Python application
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        name: Checkout code
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -24,23 +24,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install jq
-        run: sudo apt-get install jq
+      - name: Setup ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
 
-      # Assuming 'fetch-hub-url-command' is a placeholder for your actual command to get the hub URL
-      - name: Fetch Selenium Hub URL and Update config_info.json
-        run: |
-          HUB_URL=$(fetch-hub-url-command)
-          if [ -z "$HUB_URL" ]; then
-            echo "Failed to fetch the Selenium Hub URL"
-            exit 1
-          fi
-          echo "Fetched Hub URL: $HUB_URL"
-          jq --arg hub_url "$HUB_URL" '.hub = $hub_url' config_info.json > temp.json && mv temp.json config_info.json
-
-      - name: Display updated config_info.json for debugging
-        run: cat config_info.json
+      - name: Setup FirefoxDriver
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: latest
 
       - name: Run tests
         run: |
-          python -m unittest Test/test_runner.py
+          python -m unittest test_api/test_runner.py

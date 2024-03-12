@@ -1,10 +1,10 @@
 {
   "hub": "http://10.81.0.16:4444",
   "url": "https://mkhayyo7.monday.com",
-  "grid": true,
+  "grid": false,
   "parallel": true,
   "serial": false,
-  "demo": true,
+  "demo": false,
   "browser": "chrome",
   "platform": "windows",
   "browser_types": [
