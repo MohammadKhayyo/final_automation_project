@@ -1,5 +1,5 @@
 from selenium import webdriver
-from configurations import ConfigurationManager
+from infra.configurations import ConfigurationManager
 
 
 class WebDriverManager:
