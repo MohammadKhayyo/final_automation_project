@@ -1,6 +1,14 @@
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+import sys
+
+try:
+    sys.path.insert(0, '/usr/src/tests')
+except:
+    pass
+
+# Now try importing ConfigurationManager
 from infra.configurations import ConfigurationManager
 
 from test_api.games_api_test import TestGameAPI
