@@ -2,10 +2,16 @@ pipeline {
     agent any
 
     stages {
+        stage('Diagnostic') {
+        steps {
+            bat 'echo %PATH%'
+            bat 'dir C:\\Python39\\Scripts'
+            // Use the above outputs to debug the issue further
+        }
+    }
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat 'setx PATH "%PATH%;C:\\Python39\\Scripts"'
                 bat 'pip install -r requirements.txt'
             }
         }
