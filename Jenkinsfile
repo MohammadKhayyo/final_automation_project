@@ -1,31 +1,57 @@
 pipeline {
     agent any
 
+    environment {
+        PIP_PATH = 'C:\\Users\\Moham\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pip.exe'
+        PYTHON_PATH = 'C:\\Users\\Moham\\AppData\\Local\\Programs\\Python\\Python311\\python.exe'
+    }
+
     stages {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Python environment...'
-                bat 'C:\\Python39\\python.exe -m venv venv' // Create a virtual environment
-                bat 'venv\\Scripts\\pip.exe install -r requirements.txt' // Use pip from venv
+                bat "${PYTHON_PATH} -m venv venv"
+                bat "venv\\Scripts\\pip.exe install --upgrade pip"
+                bat "venv\\Scripts\\pip.exe install -r requirements.txt"
             }
         }
+
         stage('Build') {
             steps {
                 echo 'Building..'
-                // Other build steps
+                // Your build steps here
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bat 'venv\\Scripts\\python.exe -m unittest Tests/test_api/test_runner.py'
+                bat "venv\\Scripts\\python.exe -m unittest Tests/test_api/test_runner.py"
             }
         }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying..'
-                // Deployment steps
+                // Your deployment steps here
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            bat "rd /s /q venv"
+        }
+
+        success {
+            echo 'Build succeeded.'
+            // Additional steps for successful build
+        }
+
+        failure {
+            echo 'Build failed.'
+            // Additional steps for failed build
         }
     }
 }
