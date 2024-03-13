@@ -5,8 +5,7 @@ pipeline {
         stage('Setup') {
             steps {
                 echo 'Setting up virtual environment...'
-                // Replace the path with the actual path to your Python executable
-                bat 'C:\\ActualPathToPython\\python.exe -m venv venv'
+                bat 'C:\\Users\\[Username]\\AppData\\Local\\Programs\\Python\\Python39\\python.exe -m venv venv'
                 bat 'venv\\Scripts\\activate.bat'
             }
         }
