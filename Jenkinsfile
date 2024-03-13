@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 // Replace 'C:\\Python39\\Scripts\\' with the actual path to the pip executable on your Jenkins agent.
+                bat 'C:\\Python39\\python.exe --version'
                 bat 'C:\\Python39\\Scripts\\pip install -r requirements.txt'
             }
         }
