@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy the entire contents of the current directory into the working directory inside the container
 COPY . .
-COPY infra/configurations.py infra/
+COPY Utils/configurations.py infra/
 COPY Utils/users.py Utils/
 COPY Utils/generate_string.py Utils/
 # Install any dependencies

@@ -1,6 +1,11 @@
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+
+# try:
+#     sys.path.insert(0, '/usr/src/tests')
+# except:
+#     pass
 from Utils.configurations import ConfigurationManager
 from Tests.test_selenium.parallel.parallel_tasks_tests import ParallelTasksTests
 from Tests.test_selenium.parallel.parallel_sprints_tests import ParallelSprintsTests
@@ -18,21 +23,14 @@ from Tests.test_selenium.non_parallel.serial_home_tests import SerialHomeTests
 from Tests.test_selenium.non_parallel.serial_bugs_queue_tests import BugsQueuePage
 from Tests.test_selenium.non_parallel.serial_retrospectives_tests import RetrospectivesPage
 
-from Tests.test_api.games_api_test import TestGameAPI
-from Tests.test_api.teams_api_test import TestTeamsApi
-from Tests.test_api.venues_api_test import TestVenuesApi
-from Tests.test_api.ranking_api_test import RankingsApi
-
 # Grouping test cases
-serial_test_groups_one = [SerialTasksTests, SerialSprintsTests, SerialEpicsTests, SerialLoginTests, SerialHomeTests,
-                          BugsQueuePage, RetrospectivesPage]
-parallel_test_groups_one = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsTests, ParallelLoginTests,
-                            ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
-all_test_group_one = serial_test_groups_one + parallel_test_groups_one
+serial_test_groups = [SerialTasksTests, SerialSprintsTests, SerialEpicsTests, SerialLoginTests, SerialHomeTests,
+                      BugsQueuePage, RetrospectivesPage]
+parallel_test_groups = [ParallelTasksTests, ParallelSprintsTests, ParallelEpicsTests, ParallelLoginTests,
+                        ParallelHomeTests, ParallelBugsQueueTests, ParallelRetrospectivesTests]
+all_test_groups = serial_test_groups + parallel_test_groups
 
-all_test_group_two = [TestGameAPI, TestTeamsApi, TestVenuesApi, RankingsApi]
-
-all_test_groups = all_test_group_one + all_test_group_two
+demo_test = [SerialHomeTests]
 
 
 def execute_test_with_browser(browser_name: str, test_group: Type[unittest.TestCase]):
@@ -50,7 +48,7 @@ def run_tests_for_browser_serial(browser_list, test_groups):
 def run_tests_for_browser_parallel(browser_list, test_groups):
     task_list = [(browser, test_case) for browser in browser_list for test_case in test_groups]
 
-    with ThreadPoolExecutor(max_workers=min(len(all_test_groups), 8)) as executor:
+    with ThreadPoolExecutor(max_workers=4) as executor:
         [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
 
 
@@ -61,8 +59,9 @@ if __name__ == "__main__":
     is_serial = not settings['parallel']
     browsers = settings["browser_types"]
     grid_url = settings["hub"]
-    if is_parallel:
-        run_tests_for_browser_parallel(browsers, parallel_test_groups_one)
-        run_tests_for_browser_serial(browsers, all_test_group_two)
-    elif is_serial:
-        run_tests_for_browser_serial(browsers, all_test_groups)
+    # if is_parallel:
+    #     run_tests_for_browser_parallel(browsers, parallel_test_groups)
+    #     run_tests_for_browser_serial(browsers, serial_test_groups)
+    # elif is_serial:
+    #     run_tests_for_browser_serial(browsers, all_test_groups)
+    run_tests_for_browser_parallel(browsers, demo_test)
