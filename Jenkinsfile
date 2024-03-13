@@ -10,9 +10,9 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Python environment...'
-//                 bat 'C:\\Users\\Moham\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m venv venv'
-//                 bat 'environment.PYTHON_PATH -m pip install --upgrade pip'
-                bat 'environment.PIP_PATH install -r requirements.txt'
+                bat 'C:\\Users\\Moham\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m venv venv'
+                bat 'venv\\Scripts\\python.exe -m pip install --upgrade pip'
+                bat 'venv\\Scripts\\pip.exe install -r requirements.txt'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bat "environment.PYTHON_PATH -m unittest Tests/test_api/test_runner.py"
+                bat "venv\\Scripts\\python.exe -m unittest Tests/test_api/test_runner.py"
             }
         }
 
