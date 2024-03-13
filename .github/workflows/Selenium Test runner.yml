@@ -1,33 +1,39 @@
-name: Test_Runner Execution
+name: Python application
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  run_python_script:
-    name: Run Python script
-    runs-on: ubuntu-latest  # Use the latest version of Ubuntu
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  # Checkout the repository's code
+      - uses: actions/checkout@v2
+        name: Checkout code
 
       - name: Set up Python
-        uses: actions/setup-python@v5  # Set up Python environment
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt  # Install dependencies if needed
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - uses: browser-actions/setup-chrome@latest
-      - run: chrome --version
+      - name: Setup ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
 
-      - uses: browser-actions/setup-firefox@latest
-      - run: firefox --version
+      - name: Setup FirefoxDriver
+        uses: browser-actions/setup-firefox@v1
+        with:
+          firefox-version: latest
 
-      - name: Execute Python script
-        run: python Tests/test_selenium/test_runner.py
+      - name: Run tests
+        run: |
+          python -m unittest Tests/test_selenium/test_runner.py
