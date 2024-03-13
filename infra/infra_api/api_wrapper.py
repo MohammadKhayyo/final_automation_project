@@ -16,7 +16,7 @@ class APIWrapper:
         """
         configuration = cfbd.Configuration()
         config_manager = ConfigurationManager()
-        config_data = config_manager.load_settings("../config_api.json")
+        config_data = config_manager.load_settings("config_api.json")
         for key in config_data:
             configuration.api_key[key] = config_data[key]
         self.client = cfbd.ApiClient(configuration)
