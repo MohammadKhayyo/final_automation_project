@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                bat 'setx PATH "%PATH%;C:\\Python39\\Scripts"'
                 bat 'pip install -r requirements.txt'
             }
         }
