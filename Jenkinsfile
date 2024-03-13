@@ -26,7 +26,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bat "py -m unittest Tests/test_api/test_runner.py"
+                bat "${PYTHON_PATH} -m unittest Tests/test_api/test_runner.py"
             }
         }
 
