@@ -4,20 +4,27 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                bat '''
+                    python -m venv venv
+                    venv\\Scripts\\activate.bat
+                '''
+            }
+            steps {
                 echo 'Building..'
-                bat 'C:\\Python39\\Scripts\\pip install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
+
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bat 'C:\\Python39\\python.exe -m unittest Tests/test_api/test_runner.py'
+                bat 'python -m unittest Tests/test_api/test_runner.py'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying..'
-                // Deployment steps go here
+
             }
         }
     }
