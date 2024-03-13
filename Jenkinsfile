@@ -5,22 +5,21 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                // Replace 'C:\\Python39\\Scripts\\' with the actual path to the pip executable on your Jenkins agent.
-                bat 'C:\\Python39\\python.exe --version'
-                bat 'C:\\Python39\\Scripts\\pip install -r requirements.txt'
+                // Assuming Python is installed in 'C:\Python39'
+                bat 'C:\\Python39\\Scripts\\pip.exe install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-                // Replace 'C:\\Python39\\python.exe' with the actual path to the Python executable on your Jenkins agent.
+                // Assuming the 'python' command is available in 'C:\Python39'
                 bat 'C:\\Python39\\python.exe -m unittest Tests/test_api/test_runner.py'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying..'
-                // Deployment steps go here
+                // Add deployment steps here
             }
         }
     }
