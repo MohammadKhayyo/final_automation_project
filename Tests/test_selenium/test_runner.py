@@ -48,7 +48,7 @@ def run_tests_for_browser_serial(browser_list, test_groups):
 def run_tests_for_browser_parallel(browser_list, test_groups):
     task_list = [(browser, test_case) for browser in browser_list for test_case in test_groups]
 
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=8) as executor:
         [executor.submit(execute_test_with_browser, browser, test) for browser, test in task_list]
 
 
@@ -64,4 +64,4 @@ if __name__ == "__main__":
     #     run_tests_for_browser_serial(browsers, serial_test_groups)
     # elif is_serial:
     #     run_tests_for_browser_serial(browsers, all_test_groups)
-    run_tests_for_browser_parallel(browsers, demo_test)
+    run_tests_for_browser_serial(browsers, demo_test)
