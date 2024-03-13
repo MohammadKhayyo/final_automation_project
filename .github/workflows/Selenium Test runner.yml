@@ -8,13 +8,11 @@ on:
 
 jobs:
   build:
-    name: Run Python script
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        name: Checkout code
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,12 +26,10 @@ jobs:
 
       - name: Setup ChromeDriver
         uses: browser-actions/setup-chrome@latest
-        run: chrome --version
 
       - name: Setup FirefoxDriver
-        uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: latest
+        uses: browser-actions/setup-firefox@latest
+
 
       - name: Run tests
         run: |
