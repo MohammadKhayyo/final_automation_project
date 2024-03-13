@@ -2,29 +2,29 @@ pipeline {
     agent any
 
     stages {
+        stage('Setup Environment') {
+            steps {
+                echo 'Setting up Python environment...'
+                bat 'C:\\Python39\\python.exe -m venv venv' // Create a virtual environment
+                bat 'venv\\Scripts\\pip.exe install -r requirements.txt' // Use pip from venv
+            }
+        }
         stage('Build') {
             steps {
-                bat '''
-                    python -m venv venv
-                    venv\\Scripts\\activate.bat
-                '''
-            }
-            steps {
                 echo 'Building..'
-                bat 'pip install -r requirements.txt'
-
+                // Other build steps
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-                bat 'python -m unittest Tests/test_api/test_runner.py'
+                bat 'venv\\Scripts\\python.exe -m unittest Tests/test_api/test_runner.py'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying..'
-
+                // Deployment steps
             }
         }
     }
