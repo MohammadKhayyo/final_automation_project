@@ -2,45 +2,58 @@ pipeline {
     agent any
 
     stages {
-        stage('Setup') {
+        stage ('Prepare Environment') {
             steps {
-                echo 'Setting up virtual environment...'
-                bat 'C:\\Users\\[Username]\\AppData\\Local\\Programs\\Python\\Python39\\python.exe -m venv venv'
-                bat 'venv\\Scripts\\activate.bat'
+                // Assuming Python is in PATH; otherwise, use the full path to the python executable
+                script {
+                    if (isUnix()) {
+                        sh '''
+                            python3 -m venv venv
+                            source venv/bin/activate
+                            pip install --upgrade pip
+                            pip install -r requirements.txt
+                        '''
+                    } else {
+                        bat '''
+                            python -m venv venv
+                            venv\\Scripts\\activate
+                            python -m pip install --upgrade pip
+                            pip install -r requirements.txt
+                        '''
+                    }
+                }
             }
         }
-        stage('Install Dependencies') {
+
+        stage ('Run Tests') {
             steps {
-                echo 'Installing dependencies...'
-                bat 'venv\\Scripts\\pip install -r requirements.txt'
-            }
-        }
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-                bat 'call venv\\Scripts\\activate.bat && python -m unittest Tests/test_api/test_runner.py'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying..'
+                script {
+                    if (isUnix()) {
+                        sh '''
+                            source venv/bin/activate
+                            python3 Tests/test_api/test_runner.py
+                        '''
+                    } else {
+                        bat '''
+                            venv\\Scripts\\activate
+                            python Tests/test_api/test_runner.py
+                        '''
+                    }
+                }
             }
         }
     }
+
     post {
         always {
-            echo 'Cleaning up...'
-        }
-        success {
-            echo 'Build completed successfully.'
-        }
-        failure {
-            echo 'Build failed.'
+            script {
+                // Clean up virtual environment
+                if (isUnix()) {
+                    sh "rm -rf venv"
+                } else {
+                    bat "rd /s /q venv"
+                }
+            }
         }
     }
 }
