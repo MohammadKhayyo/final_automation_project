@@ -1,5 +1,5 @@
 # Use a specific version of the python image
-FROM python:3.12
+FROM python:3.9
 
 # Set the working directory inside the container
 WORKDIR /usr/src/tests
@@ -16,13 +16,11 @@ RUN apt-get update && apt-get install -y \
 
 # Copy the entire contents of the current directory into the working directory inside the container
 COPY . .
-COPY Utils/configurations.py infra/
+COPY Utils/configurations.py Utils/
 COPY Utils/users.py Utils/
 COPY Utils/generate_string.py Utils/
 # Install any dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set the command to run the test runner when the container starts
-#CMD ["python", "./test_api/test_runner.py"]
-
-CMD ["python", "-m", "unittest", "./Test/non_parallel/serial_home_tests.py"]
+CMD ["python", "-m", "unittest", "Tests/test_selenium/test_runner.py"]
