@@ -24,13 +24,14 @@ jobs:
         run: java -jar selenium-server-4.17.0.jar hub &
 
       - name: waiting
-        run: ping 127.0.0.1 -n 11 > nul
+        run: ping 127.0.0.1 -c 11 > /dev/null
 
       - name: Start Selenium Grid Node
         run: java -jar selenium-server-4.17.0.jar node --port 5555 --selenium-manager true &
 
       - name: waiting
-        run: ping 127.0.0.1 -n 11 > nul
+        run: ping 127.0.0.1 -c 11 > /dev/null
+
   api_test:
     name: API Test Runner
     needs: setup_selenium_grid
