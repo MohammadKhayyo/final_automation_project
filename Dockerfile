@@ -21,3 +21,4 @@ RUN apt-get update && apt-get install -y \
 
 
 
+#docker build --build-arg IMAGE_NAME=tests --build-arg TAG=latest -t tests:latest .
