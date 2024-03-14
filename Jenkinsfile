@@ -7,14 +7,22 @@ pipeline {
     }
 
     stages {
-//         stage('Setup Environment') {
-//             steps {
-//                 echo 'Setting up Python environment...'
-// //                 bat "${PYTHON_PATH} -m venv venv"
-// //                 bat "${PYTHON_PATH} -m pip install --upgrade pip"
-//                 bat "${PIP_PATH} install -r requirements.txt"
-//             }
-//         }
+        stage('Setup Environment') {
+            steps {
+                echo 'Setting up Python environment...'
+//                 bat "${PYTHON_PATH} -m venv venv"
+//                 bat "${PYTHON_PATH} -m pip install --upgrade pip"
+                bat "${PIP_PATH} install -r requirements.txt"
+            }
+        }
+
+        stage('Running API Tests') {
+            steps {
+                echo 'Testing...'
+                bat "${PYTHON_PATH} Tests/test_api/test_runner.py"
+            }
+        }
+
         stage('Setup Selenium Server HUB') {
             steps {
                 echo 'Setting up Selenium server HUB...'
@@ -33,24 +41,10 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Running Selenium Tests') {
             steps {
-                echo 'Building..'
-                // Your build steps here
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-                bat "${PYTHON_PATH} -m unittest Tests/test_selenium/test_runner.py"
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying..'
-                // Your deployment steps here
+                echo 'Testing...'
+                 bat "${PYTHON_PATH} Selenium_test_runner.py"
             }
         }
     }
@@ -59,16 +53,6 @@ pipeline {
         always {
             echo 'Cleaning up...'
 //             bat "rd /s /q venv"
-        }
-
-        success {
-            echo 'Build succeeded.'
-            // Additional steps for successful build
-        }
-
-        failure {
-            echo 'Build failed.'
-            // Additional steps for failed build
         }
     }
 }
