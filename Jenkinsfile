@@ -45,7 +45,7 @@ pipeline {
         stage('Running Selenium Tests') {
             steps {
                 echo 'Testing...'
-                 bat "${PYTHON_PATH} -m unittest Selenium_test_runner.py"
+                 bat "${PYTHON_PATH} -m unittest Tests/test_selenium/test_runner.py"
             }
         }
     }
