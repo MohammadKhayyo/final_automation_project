@@ -24,7 +24,7 @@ jobs:
         run: java -jar selenium-server-4.17.0.jar hub &
 
       - name: Start Selenium Grid Node
-        run: java -jar selenium-server-4.17.0.jar node --port 5555 --config /path/to/your/nodeConfig.json &
+        run: java -jar selenium-server-4.17.0.jar node --port 5555 --selenium-manager true &
 
   api_test:
     name: API Test Runner
