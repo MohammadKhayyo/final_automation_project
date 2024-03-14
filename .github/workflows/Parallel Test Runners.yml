@@ -21,16 +21,13 @@ jobs:
           distribution: 'adopt'
 
       - name: Start Selenium Grid Hub
-        run: java -jar selenium-server-4.17.0.jar hub &
-
-      - name: waiting
-        run: ping 127.0.0.1 -c 11 > /dev/null
+        run: nohup java -jar selenium-server.jar hub & sleep 10
+        shell: bash
 
       - name: Start Selenium Grid Node
-        run: java -jar selenium-server-4.17.0.jar node --port 5555 --selenium-manager true &
+        run: nohup java -jar selenium-server.jar node --port 5555 --selenium-manager true & sleep 10
+        shell: bash
 
-      - name: waiting
-        run: ping 127.0.0.1 -c 11 > /dev/null
 
   api_test:
     name: API Test Runner
