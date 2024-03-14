@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
@@ -9,8 +10,8 @@ import sys
 #     pass
 
 # Now try importing ConfigurationManager
-from Utils.configurations import ConfigurationManager
 
+from Utils.configurations import ConfigurationManager
 from Tests.test_api.games_api_test import TestGameAPI
 from Tests.test_api.teams_api_test import TestTeamsApi
 from Tests.test_api.venues_api_test import TestVenuesApi
