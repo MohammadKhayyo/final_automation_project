@@ -1,11 +1,12 @@
+import sys
 from typing import Type
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 
-# try:
-#     sys.path.insert(0, '/usr/src/tests')
-# except:
-#     pass
+try:
+    sys.path.insert(0, '/usr/src/tests')
+except:
+    pass
 from Utils.configurations import ConfigurationManager
 # from Tests.test_selenium.parallel.parallel_tasks_tests import ParallelTasksTests
 # from Tests.test_selenium.parallel.parallel_sprints_tests import ParallelSprintsTests
