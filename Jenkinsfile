@@ -8,13 +8,13 @@ pipeline {
     }
 
     stages {
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    def customImage = docker.build("${IMAGE_NAME}:${TAG}")
-                }
-            }
-        }
+//         stage('Build Docker Image') {
+//             steps {
+//                 script {
+//                     def customImage = docker.build("${IMAGE_NAME}:${TAG}")
+//                 }
+//             }
+//         }
 
         stage('Run API Test') {
             steps {
