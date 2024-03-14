@@ -12,16 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Checkout the repository's code
+        uses: actions/checkout@v4
+
+      - name: Download Selenium Server
+        run: wget https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar -O selenium-server.jar
 
       - name: Start Selenium Server HUB
-        run: nohup java -jar selenium-server.jar hub & sleep 10
-        shell: bash
+        run: |
+          java -jar selenium-server.jar -role hub &
+          sleep 10
 
-      - name: Start Selenium Server nodes
-        run: nohup java -jar selenium-server.jar node --port 5555 --selenium-manager true & sleep 10
-        shell: bash
+      - name: Start Selenium Server node
+        run: |
+          java -jar selenium-server.jar -role node -hub http://localhost:4444/grid/register -port 5555 &
+          sleep 10
 
+      - name: Check Selenium Grid Hub Status
+        run: |
+          curl http://localhost:4444/grid/api/hub
+          echo "Selenium Grid Hub status checked."
 
   api_test:
     name: API Test Runner
@@ -51,23 +60,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Checkout the repository's code
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5  # Set up Python environment
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt  # Install dependencies if needed
+          pip install -r requirements.txt
 
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version
 
       - name: Setup FirefoxDriver
         uses: browser-actions/setup-firefox@latest
-
 
       - name: Run Selenium tests
         run: |
