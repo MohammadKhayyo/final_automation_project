@@ -8,13 +8,13 @@ pipeline {
     }
 
     stages {
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             def customImage = docker.build("${IMAGE_NAME}:${TAG}")
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def customImage = docker.build("${IMAGE_NAME}:${TAG}")
+                }
+            }
+        }
 
         stage('Run Tests in Parallel') {
             steps {
@@ -37,7 +37,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
-//             bat "docker rmi ${IMAGE_NAME}:${TAG}"
+            bat "docker rmi ${IMAGE_NAME}:${TAG}"
         }
     }
 } // End of pipeline
