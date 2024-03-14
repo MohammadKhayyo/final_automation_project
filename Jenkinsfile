@@ -19,9 +19,10 @@ pipeline {
         stage('Running API Tests') {
             steps {
                 echo 'Testing...'
-                bat "${PYTHON_PATH} Tests/test_api/test_runner.py"
+                bat "${PYTHON_PATH} -m unittest Tests/test_api/test_runner.py"
             }
         }
+
 
         stage('Setup Selenium Server HUB') {
             steps {
@@ -44,7 +45,7 @@ pipeline {
         stage('Running Selenium Tests') {
             steps {
                 echo 'Testing...'
-                 bat "${PYTHON_PATH} Selenium_test_runner.py"
+                 bat "${PYTHON_PATH} -m unittest Selenium_test_runner.py"
             }
         }
     }
