@@ -10,42 +10,43 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 echo 'Setting up Python environment...'
-//                 bat "${PYTHON_PATH} -m venv venv"
-//                 bat "${PYTHON_PATH} -m pip install --upgrade pip"
                 bat "${PIP_PATH} install -r requirements.txt"
             }
         }
 
-        stage('Running API Tests') {
-            steps {
-                echo 'Testing...'
-                bat "${PYTHON_PATH} -m unittest Tests/test_api/test_runner.py"
-            }
-        }
+        stage('Parallel Steps') {
+            parallel {
+                stage('Running API Tests') {
+                    steps {
+                        echo 'Testing...'
+                        bat "${PYTHON_PATH} -m unittest Tests/test_api/test_runner.py"
+                    }
+                }
 
+                stage('Setup Selenium Server HUB') {
+                    steps {
+                        echo 'Setting up Selenium server HUB...'
+                        bat "start /b java -jar selenium-server-4.17.0.jar hub"
+                        // Delay for 10 seconds
+                        bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
+                    }
+                }
 
-        stage('Setup Selenium Server HUB') {
-            steps {
-                echo 'Setting up Selenium server HUB...'
-                bat "start /b java -jar selenium-server-4.17.0.jar hub"
-                // Delay for 10 seconds
-                bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
-            }
-        }
-
-        stage('Setup Selenium Server nodes') {
-            steps {
-                echo 'Setting up Selenium server nodes...'
-                bat "start /b java -jar selenium-server-4.17.0.jar node --port 5555 --selenium-manager true"
-                // Delay for 10 seconds
-                bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
+                stage('Setup Selenium Server nodes') {
+                    steps {
+                        echo 'Setting up Selenium server nodes...'
+                        bat "start /b java -jar selenium-server-4.17.0.jar node --port 5555 --selenium-manager true"
+                        // Delay for 10 seconds
+                        bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
+                    }
+                }
             }
         }
 
         stage('Running Selenium Tests') {
             steps {
                 echo 'Testing...'
-                 bat "${PYTHON_PATH} -m unittest Tests/test_selenium/test_runner.py"
+                bat "${PYTHON_PATH} -m unittest Tests/test_selenium/test_runner.py"
             }
         }
     }
@@ -53,7 +54,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
-//             bat "rd /s /q venv"
+            // bat "rd /s /q venv"
         }
     }
 }
