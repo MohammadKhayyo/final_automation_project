@@ -7,12 +7,29 @@ pipeline {
     }
 
     stages {
-        stage('Setup Environment') {
+//         stage('Setup Environment') {
+//             steps {
+//                 echo 'Setting up Python environment...'
+// //                 bat "${PYTHON_PATH} -m venv venv"
+// //                 bat "${PYTHON_PATH} -m pip install --upgrade pip"
+//                 bat "${PIP_PATH} install -r requirements.txt"
+//             }
+//         }
+        stage('Setup Selenium Server HUB') {
             steps {
-                echo 'Setting up Python environment...'
-//                 bat "${PYTHON_PATH} -m venv venv"
-//                 bat "${PYTHON_PATH} -m pip install --upgrade pip"
-                bat "${PIP_PATH} install -r requirements.txt"
+                echo 'Setting up Selenium server HUB...'
+                bat "start /B java -jar selenium-server.jar hub"
+                // Delay for 10 seconds
+                bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
+            }
+        }
+
+        stage('Setup Selenium Server nodes') {
+            steps {
+                echo 'Setting up Selenium server nodes...'
+                bat "start /B java -jar selenium-server.jar node --port 5555 --selenium-manager true"
+                // Delay for 10 seconds
+                bat 'ping 127.0.0.1 -n 11 > nul' // Windows command to sleep for 10 seconds
             }
         }
 
@@ -41,7 +58,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up...'
-            bat "rd /s /q venv"
+//             bat "rd /s /q venv"
         }
 
         success {
