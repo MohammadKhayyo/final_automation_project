@@ -1,4 +1,4 @@
-from infra.infra_selenium.page_base import BasePage
+from infra.infra_ui.page_base import BasePage
 from selenium.webdriver.common.by import By
 
 

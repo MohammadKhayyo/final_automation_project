@@ -1,63 +1,78 @@
+import traceback
 import unittest
 from cfbd.rest import ApiException
 from logic.logic_api.Games_api import GamesApi
 from infra.infra_api.api_wrapper import APIWrapper
+from infra.infra_jira.jira_wrapper import JiraWrapper
 
 
 class TestGameAPI(unittest.TestCase):
 
     def setUp(self):
-        """
-        Set up method called before each test. It initializes instances of APIWrapper and GamesApi to be used in the test methods.
-        """
+        super().setUp()  # Call the base class setup
         self.year = 2021
         self.game_id = 401309866  # Example game ID
         self.team = 'Clemson'
         self.games_api = GamesApi()
         self.API_wrapper = APIWrapper()
+        self.jira = JiraWrapper()
+        self.project_key = "KP"  # Adjust to your JIRA project key
+        self._test_errors = None
+        self.summary = f"Assertion failed in {self.id().split('.')[-1]}"
 
+    def tearDown(self):
+        for test, exc_info in self._outcome.errors:
+            if exc_info:
+                # This will format the exception information into a string
+                error_type, error_instance, error_traceback = exc_info
+                formatted_traceback = ''.join(traceback.format_exception(error_type, error_instance, error_traceback))
+                description = f"Test {self._testMethodName} failed: {str(error_instance)}\n{formatted_traceback}"
+                issue_key = self.jira.create_issue(self.summary, f"{self._test_errors}\n{description}",
+                                                   self.project_key)
+                print(f"Created JIRA issue: {issue_key}")
+        super().tearDown()
+
+    def assertAndCapture(self, assertion_callable, *args, **kwargs):
+        try:
+            assertion_callable(*args, **kwargs)
+        except Exception as e:  # Catch any kind of exception
+            self._test_errors = (e.__class__.__name__, str(e), e.__traceback__)
+            raise
+
+    # Now use assertAndCapture for each assertion in your test methods
     def test_get_games(self):
-        """test_selenium case for getting games for a specific year."""
         # Arrange
-        year = 2021
-        params = {'year': year}
+        params = {'year': self.year}
 
         # Act
-        try:
-            response = self.games_api.get_games(**params)
+        response = self.games_api.get_games(**params)
 
-            # Assert
-            self.assertTrue(response, "The response should not be empty.")
-
-            params['season'] = params.pop('year')
-            status = self.API_wrapper.check_response_content(response_json=response, **params)
-            self.assertTrue(status, "The status should be True indicating correct response content.")
-        except ApiException as e:
-            self.fail(f"API exception: {e}")
+        # Assert
+        self.assertAndCapture(self.assertTrue, response, "The response should not be empty.")
+        params['season'] = params.pop('year')
+        status = self.API_wrapper.check_response_content(response_json=response, **params)
+        self.assertAndCapture(self.assertTrue, status, "The status should be True indicating correct response content.")
 
     def test_get_game_media(self):
-        """test_selenium case for getting game media information for a specific year."""
+        """test_ui case for getting game media information for a specific year."""
         # Arrange
         year = 2021
         media_type = 'web'
         params = {'year': year, 'media_type': media_type}
 
         # Act
-        try:
-            response = self.games_api.get_game_media(**params)
+        response = self.games_api.get_game_media(**params)
 
-            # Assert
-            self.assertTrue(response, "The response should not be empty.")
+        # Assert
+        self.assertAndCapture(self.assertTrue, response, "The response should not be empty.")
 
-            params['season'] = params.pop('year')
-            status = self.API_wrapper.check_response_content(response_json=response, **params)
-            self.assertTrue(status, "The status should be True indicating correct response content.")
-        except ApiException as e:
-            self.fail(f"API exception: {e}")
+        params['season'] = params.pop('year')
+        status = self.API_wrapper.check_response_content(response_json=response, **params)
+        self.assertAndCapture(self.assertTrue, status, "The status should be True indicating correct response content.")
 
     def test_get_player_game_stats(self):
         """
-        test_selenium case to ensure the API can fetch player game stats for a specified year and game ID.
+        test_ui case to ensure the API can fetch player game stats for a specified year and game ID.
         - Uses 'year' and 'game_id' parameters to fetch stats.
         - Asserts that the response is a list, which is the expected data type for player game stats.
         """
@@ -68,12 +83,12 @@ class TestGameAPI(unittest.TestCase):
         response = self.games_api.get_player_game_stats(**params)
 
         # Assert
-        self.assertIsInstance(response, list)
-        self.assertEqual(getattr(response[0], 'id'), self.game_id)
+        self.assertAndCapture(self.assertIsInstance, response, list)
+        self.assertAndCapture(self.assertEqual, getattr(response[0], 'id'), self.game_id)
 
     def test_get_game_by_id(self):
         """
-        test_selenium case to verify that the Games API can retrieve details for a game using a specific game ID.
+        test_ui case to verify that the Games API can retrieve details for a game using a specific game ID.
         - Fetches all games for a year and then filters to find the game with the specified ID.
         - Asserts that the game details are not None and that the ID matches the specified ID.
         """
@@ -86,12 +101,12 @@ class TestGameAPI(unittest.TestCase):
             (game for game in games if getattr(game, 'id', "") == self.game_id), None)
 
         # Assert
-        self.assertIsNotNone(game_details, "Game details were not found.")
-        self.assertEqual(getattr(game_details, 'id'), self.game_id)
+        self.assertAndCapture(self.assertIsNotNone, game_details, "Game details were not found.")
+        self.assertAndCapture(self.assertEqual, getattr(game_details, 'id'), self.game_id)
 
     def test_get_team_records(self):
         """
-        test_selenium whether the Games API can retrieve records for a specific team.
+        test_ui whether the Games API can retrieve records for a specific team.
         - Uses 'team' parameter to fetch records.
         - Asserts that the response is not empty.
         - Verifies that every record in the response corresponds to the specified team.
@@ -104,9 +119,9 @@ class TestGameAPI(unittest.TestCase):
         response = self.games_api.get_team_records(**params)
 
         # Assert
-        self.assertTrue(response)
-        self.assertTrue(
-            all(getattr(record, 'team') == self.team for record in response))
+        self.assertAndCapture(self.assertTrue, response)
+        self.assertAndCapture(self.assertTrue,
+                              all(getattr(record, 'team') == self.team for record in response))
 
 
 if __name__ == '__main__':

@@ -1,8 +1,8 @@
 import unittest
 from Utils import users
-from infra.infra_selenium.browser_wrapper import WebDriverManager
-from logic.logic_selenium.login_page import LoginPage
-from logic.logic_selenium.Home_page import HomePage
+from infra.infra_ui.browser_wrapper import WebDriverManager
+from logic.logic_ui.login_page import LoginPage
+from logic.logic_ui.Home_page import HomePage
 
 
 class SerialHomeTests(unittest.TestCase):

@@ -13,7 +13,7 @@ class ConfigurationManager:
         output = join(self.project_root, 'configs', filename)
         return output
 
-    def load_settings(self, file_name="config_info.json"):
+    def load_settings(self, file_name="config_ui.json"):
         """Loads configuration settings from a JSON file."""
         file_path = self.get_filename(file_name)
         with open(file_path, 'r') as file:
