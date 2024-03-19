@@ -1,6 +1,7 @@
 import unittest
 from logic.logic_api.Rankings_api import RankingsApi
 from infra.infra_jira.jira_wrapper import JiraWrapper
+from Utils import error_handling
 
 
 class TestRankingsApi(unittest.TestCase):
@@ -15,7 +16,7 @@ class TestRankingsApi(unittest.TestCase):
         self.test_name = self.id().split('.')[-1]
         self.summary = f"{self.test_name}"
         self.project_key = "KP"  # Adjust to your JIRA project key
-        self.test_error = None  # Initialize error tracking
+        self._test_errors = None  # Initialize error tracking
 
     def test_rank_ascending_order(self):
         """
@@ -28,13 +29,11 @@ class TestRankingsApi(unittest.TestCase):
         response = self.rankings_api.get_rankings(**params)
 
         # Assert
-        self.assertTrue(self.rankings_api.is_rank_ascending(response),
-                        "Ranks should be in ascending order.")
+        error_handling.assertAndCapture(self, self.assertTrue, self.rankings_api.is_rank_ascending(response),
+                                        "Ranks should be in ascending order.")
 
     def tearDown(self):
-        if self.test_error:
-            issue_key = self.jira.create_issue(self.summary, str(self.test_error), self.project_key)
-            print(f"Created JIRA issue: {issue_key}")
+        error_handling.report_status(self)
         super().tearDown()
 
 
